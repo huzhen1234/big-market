@@ -1,0 +1,9 @@
+25-12-24.22:13:17.630 [main            ] INFO  AwardDaoTest           - Starting AwardDaoTest using Java 21.0.8 on zhendeMac-mini.local with PID 80966 (started by huzhen in /Users/huzhen/Developer/java/big_market/big_market_app)
+25-12-24.22:13:17.630 [main            ] INFO  AwardDaoTest           - No active profile set, falling back to 1 default profile: "default"
+25-12-24.22:13:18.245 [main            ] INFO  MybatisPlusApplicationContextAware - Register ApplicationContext instances org.springframework.web.context.support.GenericWebApplicationContext@6c37bd27
+25-12-24.22:13:18.283 [main            ] INFO  AwardDaoTest           - Started AwardDaoTest in 0.804 seconds (JVM running for 1.289)
+25-12-24.22:13:18.383 [main            ] INFO  HikariDataSource       - HikariPool-1 - Starting...
+25-12-24.22:13:18.554 [main            ] INFO  HikariDataSource       - HikariPool-1 - Start completed.
+25-12-24.22:13:18.637 [main            ] INFO  AwardDaoTest           - strategyConfig: {"createBy":"system","createTime":"2025-12-17 05:49:11","id":2,"strategyDesc":"积分抽奖活动 - 9档奖品版","strategyId":1001,"updateBy":"system","updateTime":"2025-12-17 05:49:11"}
+25-12-24.22:13:18.644 [SpringApplicationShutdownHook] INFO  HikariDataSource       - HikariPool-1 - Shutdown initiated...
+25-12-24.22:13:18.646 [SpringApplicationShutdownHook] INFO  HikariDataSource       - HikariPool-1 - Shutdown completed.
