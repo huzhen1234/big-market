@@ -1,4 +1,4 @@
-package generator.service;
+package com.hutu.infrastructure.persistent.service;
 
 import com.hutu.infrastructure.persistent.po.StrategyAward;
 import com.baomidou.mybatisplus.extension.service.IService;

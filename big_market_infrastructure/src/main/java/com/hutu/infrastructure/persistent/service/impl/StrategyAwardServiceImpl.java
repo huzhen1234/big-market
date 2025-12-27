@@ -1,8 +1,8 @@
-package generator.service.impl;
+package com.hutu.infrastructure.persistent.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.hutu.infrastructure.persistent.po.StrategyAward;
-import generator.service.StrategyAwardService;
+import com.hutu.infrastructure.persistent.service.StrategyAwardService;
 import com.hutu.infrastructure.persistent.mapper.StrategyAwardMapper;
 import org.springframework.stereotype.Service;
 
