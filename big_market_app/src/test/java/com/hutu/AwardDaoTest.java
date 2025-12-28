@@ -1,6 +1,10 @@
 package com.hutu;
 
 import com.alibaba.fastjson2.JSON;
+import com.hutu.domain.strategy.model.entity.StrategyAwardEntity;
+import com.hutu.domain.strategy.service.IStrategyService;
+import com.hutu.domain.strategy.service.impl.StrategyCacheService;
+import com.hutu.domain.strategy.service.impl.StrategyService;
 import com.hutu.infrastructure.persistent.mapper.StrategyConfigMapper;
 import com.hutu.infrastructure.persistent.po.StrategyConfig;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Slf4j
 @SpringBootTest
@@ -15,12 +20,22 @@ public class AwardDaoTest {
 
     @Resource
     private StrategyConfigMapper configMapper;
+    @Resource
+    private IStrategyService strategyService;
+    @Resource
+    private StrategyCacheService cacheService;
 
     @Test
     public void test_queryAwardList() {
         for (StrategyConfig strategyConfig : configMapper.selectList(null)) {
             log.info("strategyConfig: {}", JSON.toJSONString(strategyConfig));
         }
+    }
+
+    @Test
+    public void test_queryAwardList2() {
+//        cacheService.assembleLotteryStrategy(1001L);
+        System.out.println(strategyService.findStrategyAwardId(1001L));
     }
 
 }

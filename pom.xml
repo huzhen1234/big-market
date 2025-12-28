@@ -27,6 +27,9 @@
         <guava.version>33.4.0-jre</guava.version>
         <lombok.version>1.18.38</lombok.version>
         <redisson.version>3.26.0</redisson.version>
+        <jetcache.version>2.7.7</jetcache.version>
+        <caffeine.version>3.1.8</caffeine.version>
+        <kryo.version>4.0.2</kryo.version>
     </properties>
 
     <dependencyManagement>
@@ -75,6 +78,19 @@
                 <groupId>org.redisson</groupId>
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redisson.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.alicp.jetcache/jetcache-redisson -->
+            <!-- https://mvnrepository.com/artifact/com.alicp.jetcache/jetcache-starter-redisson -->
+            <dependency>
+                <groupId>com.alicp.jetcache</groupId>
+                <artifactId>jetcache-starter-redisson</artifactId>
+                <version>${jetcache.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
+            <dependency>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>${caffeine.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.hutu</groupId>

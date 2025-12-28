@@ -32,6 +32,23 @@ spring:
     retry-interval: 1000
     ping-interval: 60000
     keep-alive: true
+jetcache:
+  statIntervalMinutes: 15          # 统计间隔（命中率、QPS）
+  areaInCacheName: false           # cacheName 是否带 area 前缀
+
+  local:
+    default:
+      type: caffeine          # 本地缓存类型
+      keyConvertor: fastjson2      # key 序列化方式
+      limit: 1000                  # 本地缓存最大条目数
+
+  remote:
+    default:
+      type: redisson               # ⭐ 使用 redisson
+      keyConvertor: fastjson2
+      valueEncoder: java           # value 序列化（推荐 kryo）
+      valueDecoder: java
+      broadcastChannel: jetcache-broadcast
 
 # 日志
 logging:
