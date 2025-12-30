@@ -7,6 +7,7 @@
     <resultMap id="BaseResultMap" type="com.hutu.infrastructure.persistent.po.StrategyGuarantee">
             <id property="id" column="id" />
             <result property="strategyId" column="strategy_id" />
+            <result property="strategyType" column="strategy_type" />
             <result property="triggerCondition" column="trigger_condition" />
             <result property="triggerValue" column="trigger_value" />
             <result property="guaranteeAwards" column="guarantee_awards" />
@@ -18,7 +19,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,strategy_id,trigger_condition,trigger_value,guarantee_awards,enabled,
+        id,strategy_id,strategyType,trigger_condition,trigger_value,guarantee_awards,enabled,
         create_by,update_by,create_time,update_time
     </sql>
 </mapper>

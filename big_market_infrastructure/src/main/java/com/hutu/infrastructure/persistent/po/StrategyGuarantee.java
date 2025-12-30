@@ -25,6 +25,11 @@ public class StrategyGuarantee {
     private Long strategyId;
 
     /**
+     * 策略 类型
+     */
+    private String strategyType;
+
+    /**
      * 触发条件，如：MIN_SCORE
      */
     private String triggerCondition;
