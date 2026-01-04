@@ -30,6 +30,7 @@
         <jetcache.version>2.7.7</jetcache.version>
         <caffeine.version>3.1.8</caffeine.version>
         <kryo.version>4.0.2</kryo.version>
+        <hutool.version>5.8.38</hutool.version>
     </properties>
 
     <dependencyManagement>
@@ -91,6 +92,12 @@
                 <groupId>com.github.ben-manes.caffeine</groupId>
                 <artifactId>caffeine</artifactId>
                 <version>${caffeine.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.hutu</groupId>
