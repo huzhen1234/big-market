@@ -1,13 +1,15 @@
 package com.hutu.domain.strategy.model.entity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
- * 策略保底配置表
+ * 策略配置
  */
 @Data
 @Builder
@@ -22,6 +24,11 @@ public class StrategyGuaranteeEntity implements Serializable {
     private Long strategyId;
 
     /**
+     * 策略类型，如：RULE_WEIGHT
+     */
+    private String strategyType;
+
+    /**
      * 触发条件，如：MIN_SCORE
      */
     private String triggerCondition;
@@ -34,5 +41,17 @@ public class StrategyGuaranteeEntity implements Serializable {
     /**
      * 保底奖品及权重，格式：[{"awardId":301,"weight":50},...]
      */
-    private Object guaranteeAwards;
+    private List<AwardWeight> guaranteeAwards;
+
+    /**
+     * 奖品权重内部类
+     */
+    @Data
+    public static class AwardWeight {
+        @JsonProperty("awardId")
+        private Long awardId;
+
+        @JsonProperty("weight")
+        private Integer weight;
+    }
 }
