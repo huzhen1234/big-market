@@ -5,6 +5,7 @@ import com.hutu.domain.strategy.model.entity.StrategyAwardEntity;
 import com.hutu.domain.strategy.model.entity.StrategyGuaranteeEntity;
 import com.hutu.domain.strategy.service.IStrategyService;
 import com.hutu.types.enums.StrategyEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class StrategyService implements IStrategyService {
 
@@ -61,6 +63,7 @@ public class StrategyService implements IStrategyService {
         }
         // 生成1到totalWeight之间的随机整数
         int randomValue = ThreadLocalRandom.current().nextInt(1, totalWeight + 1);
+        log.info("抽奖，随机数：{}", randomValue);
         int currentWeight = 0;
         for (StrategyAwardEntity award : validAwards) {
             int awardWeight = awardWeightMap.get(award.getAwardId());
@@ -80,6 +83,7 @@ public class StrategyService implements IStrategyService {
             award.setCumulativeRate(cumulative);
         }
         double r = ThreadLocalRandom.current().nextDouble(); // 生成一个大于等于 0.0 且小于 1.0 的随机浮点数
+        log.info("抽奖，随机数：{}", r);
         for (StrategyAwardEntity award : strategyAwardEntities) {
             if (r <= award.getCumulativeRate().doubleValue()) {
                 return award.getAwardId();
@@ -95,7 +99,7 @@ public class StrategyService implements IStrategyService {
         // 用于记录匹配的规则
         StrategyGuaranteeEntity matchedRule = null;
         for (StrategyGuaranteeEntity rule : rules) {
-            if (StrategyEnum.RULE_WEIGHT.name().equals(rule.getTriggerCondition())) {
+            if (StrategyEnum.MIN_SCORE.name().equals(rule.getTriggerCondition())) {
                 int minScore = Integer.parseInt(rule.getTriggerValue());
 
                 // 如果用户积分大于等于当前阈值，记录此规则

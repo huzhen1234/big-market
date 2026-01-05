@@ -47,7 +47,8 @@ public class StrategyGuaranteeEntity implements Serializable {
      * 奖品权重内部类
      */
     @Data
-    public static class AwardWeight {
+    public static class AwardWeight implements Serializable{
+        private static final long serialVersionUID = 1L;
         @JsonProperty("awardId")
         private Long awardId;
 
