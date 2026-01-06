@@ -1,10 +1,8 @@
 package com.hutu;
 
 import com.alibaba.fastjson2.JSON;
-import com.hutu.domain.strategy.model.entity.StrategyAwardEntity;
 import com.hutu.domain.strategy.service.IStrategyService;
-import com.hutu.domain.strategy.service.impl.StrategyCacheService;
-import com.hutu.domain.strategy.service.impl.StrategyService;
+import com.hutu.domain.strategy.service.cache.StrategyCacheService;
 import com.hutu.infrastructure.persistent.mapper.StrategyConfigMapper;
 import com.hutu.infrastructure.persistent.po.StrategyConfig;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Slf4j
 @SpringBootTest

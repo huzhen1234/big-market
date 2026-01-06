@@ -1,4 +1,4 @@
-package com.hutu.domain.strategy.service.impl;
+package com.hutu.domain.strategy.service.cache;
 
 import com.alicp.jetcache.anno.CacheType;
 import com.alicp.jetcache.anno.Cached;
@@ -54,7 +54,7 @@ public class StrategyCacheService {
             expire = -1,
             cacheType = CacheType.BOTH
     )
-    List<StrategyGuaranteeEntity> queryStrategyGuaranteeWeight(Long strategyId){
+    public List<StrategyGuaranteeEntity> queryStrategyGuaranteeWeight(Long strategyId){
         return guaranteeRepository.queryStrategyGuarantee(strategyId);
     }
 
