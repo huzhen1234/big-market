@@ -39,4 +39,20 @@ public class StrategyGuaranteeRepository implements IStrategyGuaranteeRepository
         }
         return CollectionUtil.empty(StrategyGuaranteeEntity.class);
     }
+
+    @Override
+    public StrategyGuaranteeEntity queryStrategyGuaranteeBlack(Long strategyId) {
+        LambdaQueryWrapper<StrategyGuarantee> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(StrategyGuarantee::getStrategyId, strategyId)
+                .eq(StrategyGuarantee::getStrategyType, StrategyEnum.RULE_BLACKLIST.name());
+        StrategyGuarantee strategyGuarantee = guaranteeMapper.selectOne(queryWrapper);
+        return StrategyGuaranteeEntity.builder()
+                .strategyId(strategyGuarantee.getStrategyId())
+                .triggerCondition(strategyGuarantee.getTriggerCondition())
+                .triggerValue(strategyGuarantee.getTriggerValue()) // 触发值 黑名单的值 [1,2,3]
+                .guaranteeAwards(JSONUtil.toList(JSONUtil.toJsonStr(strategyGuarantee.getGuaranteeAwards()), StrategyGuaranteeEntity.AwardWeight.class))
+                .backListUserIds(JSONUtil.toList(JSONUtil.toJsonStr(strategyGuarantee.getTriggerValue()), Long.class))
+                .build();
+
+    }
 }

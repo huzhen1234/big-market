@@ -58,4 +58,18 @@ public class StrategyCacheService {
         return guaranteeRepository.queryStrategyGuaranteeWeight(strategyId);
     }
 
+
+
+    @Cached(
+            name = Constants.STRATEGY_BLACK_KEY,
+            key = "#strategyId",
+            expire = -1,
+            cacheType = CacheType.BOTH
+    )
+    public StrategyGuaranteeEntity queryStrategyGuaranteeBlack(Long strategyId){
+        return guaranteeRepository.queryStrategyGuaranteeBlack(strategyId);
+    }
+
+
+
 }

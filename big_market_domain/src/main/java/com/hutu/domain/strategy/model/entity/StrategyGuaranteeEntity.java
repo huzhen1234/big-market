@@ -39,9 +39,14 @@ public class StrategyGuaranteeEntity implements Serializable {
     private String triggerValue;
 
     /**
-     * 保底奖品及权重，格式：[{"awardId":301,"weight":50},...]
+     * 权重 保底奖品及权重，格式：[{"awardId":301,"weight":50},...]
      */
     private List<AwardWeight> guaranteeAwards;
+
+    /**
+     * 抽奖黑名单，格式：[1001,1002,1003]
+     */
+    private List<Long> backListUserIds;
 
     /**
      * 奖品权重内部类

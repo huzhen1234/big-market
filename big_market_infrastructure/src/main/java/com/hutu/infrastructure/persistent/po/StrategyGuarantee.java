@@ -35,7 +35,8 @@ public class StrategyGuarantee {
     private String triggerCondition;
 
     /**
-     * 触发值，如：5000
+     * 触发值，如：5000,
+     * 黑名单 [1,2,34,5] -- 特例
      */
     private String triggerValue;
 

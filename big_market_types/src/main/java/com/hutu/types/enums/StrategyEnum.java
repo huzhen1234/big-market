@@ -8,6 +8,8 @@ import lombok.Getter;
 public enum StrategyEnum {
     // 权重策略 策略类型
     RULE_WEIGHT,
+    // 黑名单
+    RULE_BLACKLIST,
     // 触发条件类型 最小值
     MIN_SCORE,
     // 触发条件类型 最大值
