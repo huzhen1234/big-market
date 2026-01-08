@@ -55,7 +55,7 @@ public class StrategyCacheService {
             cacheType = CacheType.BOTH
     )
     public List<StrategyGuaranteeEntity> queryStrategyGuaranteeWeight(Long strategyId){
-        return guaranteeRepository.queryStrategyGuarantee(strategyId);
+        return guaranteeRepository.queryStrategyGuaranteeWeight(strategyId);
     }
 
 }

@@ -22,7 +22,7 @@ public class StrategyGuaranteeRepository implements IStrategyGuaranteeRepository
 
 
     @Override
-    public List<StrategyGuaranteeEntity> queryStrategyGuarantee(Long strategyId) {
+    public List<StrategyGuaranteeEntity> queryStrategyGuaranteeWeight(Long strategyId) {
         LambdaQueryWrapper<StrategyGuarantee> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(StrategyGuarantee::getStrategyId, strategyId)
                 .eq(StrategyGuarantee::getStrategyType, StrategyEnum.RULE_WEIGHT.name())
