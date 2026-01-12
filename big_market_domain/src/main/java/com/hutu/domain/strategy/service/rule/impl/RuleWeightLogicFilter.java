@@ -4,6 +4,8 @@ import com.hutu.domain.strategy.model.entity.RuleActionEntity;
 import com.hutu.domain.strategy.model.entity.RuleMatterEntity;
 import com.hutu.domain.strategy.model.valobj.RuleLogicCheckTypeVO;
 import com.hutu.domain.strategy.service.IStrategyService;
+import com.hutu.domain.strategy.service.annotation.LogicStrategy;
+import com.hutu.domain.strategy.service.factory.DefaultLogicFactory;
 import com.hutu.domain.strategy.service.rule.ILogicFilter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Component
+@LogicStrategy(logicMode = DefaultLogicFactory.LogicModel.RULE_WIGHT)
 public class RuleWeightLogicFilter implements ILogicFilter<RuleActionEntity.RaffleBeforeEntity> {
 
     @Resource
