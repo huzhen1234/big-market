@@ -24,7 +24,7 @@ public class StrategyService implements IStrategyService {
     private StrategyCacheService cacheService;
 
     @Override
-    public Long findStrategyAwardId(Long strategyId) {
+    public Long findStrategyAwardId(Long strategyId,Long userId) {
         // TODO 获取用户积分
         int score = 12345;
         // 抽奖，获取所有策略奖品(未过滤出权重商品)

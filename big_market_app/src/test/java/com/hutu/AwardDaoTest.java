@@ -32,7 +32,7 @@ public class AwardDaoTest {
     @Test
     public void test_queryAwardList2() {
 //        cacheService.assembleLotteryStrategy(1001L);
-        System.out.println(strategyService.findStrategyAwardId(1001L));
+        System.out.println(strategyService.findStrategyAwardId(1001L,1001L));
     }
 
 }
