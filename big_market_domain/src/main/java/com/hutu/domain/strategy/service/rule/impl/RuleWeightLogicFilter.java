@@ -26,7 +26,8 @@ public class RuleWeightLogicFilter implements ILogicFilter<RuleActionEntity.Raff
 
     @Override
     public RuleActionEntity<RuleActionEntity.RaffleBeforeEntity> filter(RuleMatterEntity ruleMatterEntity) {
-        Long strategyAwardId = strategyService.findStrategyAwardId(ruleMatterEntity.getStrategyId(), ruleMatterEntity.getUserId());
+        // 获取权重策略商品
+        Long strategyAwardId = strategyService.findWeightStrategyAwardId(ruleMatterEntity.getStrategyId(), ruleMatterEntity.getUserId());
         if (strategyAwardId != null) {
             return RuleActionEntity.<RuleActionEntity.RaffleBeforeEntity>builder()
                     .data(RuleActionEntity.RaffleBeforeEntity.builder()
