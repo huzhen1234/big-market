@@ -23,24 +23,31 @@ public class StrategyService implements IStrategyService {
     @Resource
     private StrategyCacheService cacheService;
 
+    // TODO 获取用户积分
+    int score = 12345;
+
     @Override
-    public Long findStrategyAwardId(Long strategyId,Long userId) {
-        // TODO 获取用户积分
-        int score = 12345;
+    public Long findWeightStrategyAwardId(Long strategyId,Long userId) {
         // 抽奖，获取所有策略奖品(未过滤出权重商品)
         List<StrategyAwardEntity> strategyAwardEntities = cacheService.assembleLotteryStrategy(strategyId);
         // 根据权重和个人积分情况来过滤奖品
         StrategyGuaranteeEntity strategyGuaranteeEntity = matchWeightRule(strategyId, score);
-        if (strategyGuaranteeEntity == null) {
-            // 情况1：无权重策略，使用原始概率进行抽奖
-            return drawLotteryByOriginalRate(strategyAwardEntities);
-        }else {
-            // 根据权重规则进行抽奖
-            return drawLotteryByWeightRule(strategyAwardEntities, strategyGuaranteeEntity);
-        }
+        // 根据权重规则进行抽奖
+        return drawLotteryByWeightRule(strategyAwardEntities, strategyGuaranteeEntity);
+    }
+
+    @Override
+    public Long findOriginStrategyAwardId(Long strategyId, Long userId) {
+        // 抽奖，获取所有策略奖品(未过滤出权重商品)
+        List<StrategyAwardEntity> strategyAwardEntities = cacheService.assembleLotteryStrategy(strategyId);
+        return drawLotteryByOriginalRate(strategyAwardEntities);
     }
 
     private Long drawLotteryByWeightRule(List<StrategyAwardEntity> strategyAwardEntities, StrategyGuaranteeEntity strategyGuaranteeEntity) {
+        // 如果没有权重规则，则使用原始概率进行抽奖
+        if (strategyGuaranteeEntity == null){
+            return null;
+        }
         List<StrategyGuaranteeEntity.AwardWeight> guaranteeAwards = strategyGuaranteeEntity.getGuaranteeAwards();
         if (CollectionUtil.isEmpty(guaranteeAwards)) {
             // todo 如果规则中未配置任何奖品，则无奖品可抽
