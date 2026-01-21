@@ -21,4 +21,6 @@ public class RuleMatterEntity implements Serializable {
     private Long userId;
     /** 策略ID */
     private Long strategyId;
+    /** 奖品ID -- 在抽奖中赋予值 */
+    private Long awardId;
 }

@@ -30,7 +30,7 @@ public class StrategyRule {
     private Long awardId;
 
     /**
-     * 规则模型编码，如：DRAW_TIMES_UNLOCK, LIKE_COUNT_UNLOCK
+     * 规则模型编码，如：DRAW_TIMES_UNLOCK, LIKE_COUNT_UNLOCK,通过#连接多个规则模型
      */
     private String ruleModel;
 

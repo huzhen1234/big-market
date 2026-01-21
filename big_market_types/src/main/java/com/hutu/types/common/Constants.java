@@ -12,4 +12,9 @@ public class Constants {
     public final static String STRATEGY_BLACK_KEY = "big_market_strategy_black_key_";
     public final static String STRATEGY_RATE_RANGE_KEY = "big_market_strategy_rate_range_key_";
 
+    // 商品规则模型分隔符
+    public final static String RULE_MODEL_SPLIT = "#";
+
+
+
 }

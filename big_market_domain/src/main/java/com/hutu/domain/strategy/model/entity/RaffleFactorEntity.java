@@ -19,6 +19,14 @@ public class RaffleFactorEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     /** 用户ID */
     private Long userId;
+
+    public RaffleFactorEntity(Long userId, Long strategyId) {
+        this.userId = userId;
+        this.strategyId = strategyId;
+    }
+
     /** 策略ID */
     private Long strategyId;
+    /** 奖品ID -- 在抽奖中赋予值 */
+    private Long awardId;
 }
