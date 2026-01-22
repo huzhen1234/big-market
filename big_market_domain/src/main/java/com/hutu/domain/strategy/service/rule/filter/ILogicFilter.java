@@ -1,4 +1,4 @@
-package com.hutu.domain.strategy.service.rule;
+package com.hutu.domain.strategy.service.rule.filter;
 
 import com.hutu.domain.strategy.model.entity.RuleActionEntity;
 import com.hutu.domain.strategy.model.entity.RuleMatterEntity;
