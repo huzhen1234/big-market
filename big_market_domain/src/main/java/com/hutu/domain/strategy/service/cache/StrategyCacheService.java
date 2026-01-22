@@ -59,7 +59,11 @@ public class StrategyCacheService {
     }
 
 
-
+    /**
+     * 获取策略黑名单
+     * @param strategyId 策略id
+     * @return 策略黑名单
+     */
     @Cached(
             name = Constants.STRATEGY_BLACK_KEY,
             key = "#strategyId",

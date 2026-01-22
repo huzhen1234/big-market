@@ -1,6 +1,6 @@
 package com.hutu.domain.strategy.service.annotation;
 
-import com.hutu.domain.strategy.service.factory.DefaultLogicFactory;
+import com.hutu.domain.strategy.service.rule.filter.factory.DefaultLogicFactory;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
