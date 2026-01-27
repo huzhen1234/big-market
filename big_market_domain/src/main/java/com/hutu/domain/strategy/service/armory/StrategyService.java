@@ -1,4 +1,4 @@
-package com.hutu.domain.strategy.service;
+package com.hutu.domain.strategy.service.armory;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.hutu.domain.strategy.model.entity.StrategyAwardEntity;

@@ -1,4 +1,4 @@
-package com.hutu.domain.strategy.service;
+package com.hutu.domain.strategy.service.armory;
 
 public interface IStrategyService {
 
