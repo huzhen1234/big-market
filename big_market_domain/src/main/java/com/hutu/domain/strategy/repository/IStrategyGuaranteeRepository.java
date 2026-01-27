@@ -22,4 +22,10 @@ public interface IStrategyGuaranteeRepository {
      */
     StrategyGuaranteeEntity queryStrategyGuaranteeBlack(Long strategyId);
 
+
+    /**
+     * 根据策略ID获取策略类型 去重
+     */
+    List<String> queryStrategyType(Long strategyId);
+
 }

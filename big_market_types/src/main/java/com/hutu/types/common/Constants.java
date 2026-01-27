@@ -17,4 +17,36 @@ public class Constants {
 
 
 
+
+    // --------------------------------------------抽奖策略规则类型----------------------------
+
+
+    // 权重策略
+    public final static String RULE_WEIGHT = "RULE_WEIGHT";
+    // 黑名单策略
+    public final static String RULE_BLACKLIST = "RULE_BLACKLIST";
+    // 兜底策略(业务使用，数据库并无该类型）
+    public final static String RULE_DEFAULT = "RULE_DEFAULT";
+
+
+
+
+
+
+    // --------------------------------------------抽奖策略规则触发条件----------------------------
+
+
+    // 触发条件类型 最小值
+    public final static String MIN_SCORE = "MIN_SCORE";
+
+    // 触发条件类型 最大值
+    public final static String MAX_SCORE = "MAX_SCORE";
+
+
+
+
+
+
+
+
 }

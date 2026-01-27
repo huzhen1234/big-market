@@ -26,6 +26,7 @@ public class StrategyGuarantee {
 
     /**
      * 策略 类型
+     * @see com.hutu.types.common.Constants
      */
     private String strategyType;
 

@@ -33,8 +33,8 @@ public class RuleLockLogicFilter implements ILogicFilter<RuleActionEntity.Raffle
         log.info("规则过滤-次数锁 userId:{} strategyId:{}", ruleMatterEntity.getUserId(), ruleMatterEntity.getStrategyId());
         StrategyRuleEntity ruleEntity = ruleRepository.findByStrategyIdAndAwardId(ruleMatterEntity.getStrategyId(), ruleMatterEntity.getAwardId());
         Integer drawTimesUnlock = ruleEntity.getDrawTimesUnlock();
-        // 用户抽奖次数大于规则限定值，规则放行
-        if (userRaffleCount >= drawTimesUnlock) {
+        // 用户抽奖次数大于规则限定值，或者是抽奖次数没有则 规则放行
+        if (drawTimesUnlock == null || userRaffleCount >= drawTimesUnlock) {
             return RuleActionEntity.<RuleActionEntity.RaffleCenterEntity>builder()
                     .code(RuleLogicCheckTypeVO.ALLOW.getCode())
                     .info(RuleLogicCheckTypeVO.ALLOW.getInfo())

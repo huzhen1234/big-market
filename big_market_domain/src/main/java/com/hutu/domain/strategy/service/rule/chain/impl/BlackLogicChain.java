@@ -10,11 +10,13 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import java.util.List;
 
+import static com.hutu.types.common.Constants.RULE_BLACKLIST;
+
 /**
  * 黑名单链
  */
 @Slf4j
-@Component
+@Component(value = RULE_BLACKLIST)
 public class BlackLogicChain extends AbstractLogicChain {
 
     @Resource
@@ -30,6 +32,8 @@ public class BlackLogicChain extends AbstractLogicChain {
             // 获取黑名单策略的商品ID
             return strategyGuaranteeEntity.getGuaranteeAwards().get(0).getAwardId();
         }
-        return -1L;
+        log.info("策略ID，{}, 用户ID：{} 不在黑名单中", strategyId, userId);
+        // 继续执行下一个链
+        return getLogic().doChain(strategyId, userId);
     }
 }

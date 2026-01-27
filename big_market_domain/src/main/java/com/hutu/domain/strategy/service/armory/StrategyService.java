@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.hutu.domain.strategy.model.entity.StrategyAwardEntity;
 import com.hutu.domain.strategy.model.entity.StrategyGuaranteeEntity;
 import com.hutu.domain.strategy.service.cache.StrategyCacheService;
-import com.hutu.types.enums.StrategyEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
+
+import static com.hutu.types.common.Constants.MIN_SCORE;
 
 @Slf4j
 @Service
@@ -106,7 +107,7 @@ public class StrategyService implements IStrategyService {
         // 用于记录匹配的规则
         StrategyGuaranteeEntity matchedRule = null;
         for (StrategyGuaranteeEntity rule : rules) {
-            if (StrategyEnum.MIN_SCORE.name().equals(rule.getTriggerCondition())) {
+            if (MIN_SCORE.equals(rule.getTriggerCondition())) {
                 int minScore = Integer.parseInt(rule.getTriggerValue());
 
                 // 如果用户积分大于等于当前阈值，记录此规则

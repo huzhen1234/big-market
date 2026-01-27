@@ -40,24 +40,23 @@ public class StrategyRuleRepository implements IStrategyRuleRepository {
                 for (int i = 0; i < models.length && i < ruleParams.length; i++) {
                     String model = models[i];
                     String param = ruleParams[i];
-                    StrategyRuleModelEnum modelEnum = StrategyRuleModelEnum.valueOf(model.toUpperCase());
+                    StrategyRuleModelEnum modelEnum =
+                            StrategyRuleModelEnum.valueOf(model.toUpperCase());
                     int paramValue = Integer.parseInt(param);
                     switch (modelEnum) {
                         case RANDOM_SCORE:
-                            // 随机积分类别，参数表示积分范围上限，如200表示1-200随机积分
                             strategyRuleEntity.setRandomScore(paramValue);
-                            break;
+                            return strategyRuleEntity;
                         case DRAW_TIMES_UNLOCK:
-                            // 抽奖次数解锁类别，参数表示需要的抽奖次数，如1表示需要抽奖1次解锁
                             strategyRuleEntity.setDrawTimesUnlock(paramValue);
-                            break;
+                            return strategyRuleEntity;
                         case LUCK:
-                            // 幸运奖类别，参数表示幸运奖的值
                             strategyRuleEntity.setLuck(paramValue);
-                            break;
+                            return strategyRuleEntity;
                         case RULE_BLACKLIST:
-                            // 黑名单类别，参数表示黑名单相关值
                             strategyRuleEntity.setRuleBlacklist(paramValue);
+                            return strategyRuleEntity;
+                        default:
                             break;
                     }
                 }

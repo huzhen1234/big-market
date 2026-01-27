@@ -5,8 +5,7 @@ import com.alibaba.fastjson2.JSON;
 import com.hutu.domain.strategy.model.entity.RaffleAwardEntity;
 import com.hutu.domain.strategy.model.entity.RaffleFactorEntity;
 import com.hutu.domain.strategy.service.IRaffleStrategy;
-import com.hutu.domain.strategy.service.IStrategyService;
-import com.hutu.domain.strategy.service.cache.StrategyCacheService;
+import com.hutu.domain.strategy.service.armory.IStrategyService;
 import com.hutu.infrastructure.persistent.mapper.StrategyConfigMapper;
 import com.hutu.infrastructure.persistent.po.StrategyConfig;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +22,6 @@ public class AwardDaoTest {
     private StrategyConfigMapper configMapper;
     @Resource
     private IStrategyService strategyService;
-    @Resource
-    private StrategyCacheService cacheService;
     @Resource
     private IRaffleStrategy raffleStrategy;
 
@@ -47,7 +44,7 @@ public class AwardDaoTest {
      */
     @Test
     public void testRaff() {
-
+        // todo 带测试
         RaffleAwardEntity raffleAwardEntity = raffleStrategy.performRaffle(new RaffleFactorEntity(1001L, 1001L));
         log.info("抽奖结果：{}", JSONUtil.toJsonStr(raffleAwardEntity));
     }
