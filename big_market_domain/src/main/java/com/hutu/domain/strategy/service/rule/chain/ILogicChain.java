@@ -1,8 +1,6 @@
 package com.hutu.domain.strategy.service.rule.chain;
 
 
-import com.hutu.domain.strategy.service.rule.ILogicChainArmory;
-
 /**
  * 责任链接口
  * 只提供核心抽奖方法，其余方法在其他接口，由它来继承

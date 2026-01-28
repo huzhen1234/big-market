@@ -1,6 +1,4 @@
-package com.hutu.domain.strategy.service.rule;
-
-import com.hutu.domain.strategy.service.rule.chain.ILogicChain;
+package com.hutu.domain.strategy.service.rule.chain;
 
 public interface ILogicChainArmory {
 
