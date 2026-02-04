@@ -7,6 +7,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+/**
+ * 抽奖的动作
+ * @param <T>
+ */
 @Data
 @Builder
 @AllArgsConstructor
