@@ -26,10 +26,12 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
         if (null == strategyId || userId == null) {
             throw new AppException(ResponseCode.ILLEGAL_PARAMETER.getCode(), ResponseCode.ILLEGAL_PARAMETER.getInfo());
         }
-        // 优化替换为责任链模式 -- 抽奖前的逻辑处理
+        // 优化替换为责任链模式 -- 抽奖前的逻辑处理 -- 可以使用是因为之间有联系，不跳跃
         ILogicChain logicChain = defaultChainFactory.createChain(strategyId);
         Long awardId = logicChain.doChain(strategyId, userId);
         raffleFactorEntity.setAwardId(awardId);
+
+        // 抽奖中的逻辑 如果不符合则是幸运奖；如果条件符合则直接获取奖品，此时需要检查库此时需要存，如果库存充足是直接获取奖品，如果不充足是兜底策略(幸运奖)
         RuleActionEntity<RuleActionEntity.RaffleCenterEntity> raffleCenterEntityRuleActionEntity = doCheckRaffleCenterLogic(raffleFactorEntity);
         if (RuleLogicCheckTypeVO.TAKE_OVER.getCode().equals(raffleCenterEntityRuleActionEntity.getCode())) {
             log.info("抽奖中被拦截，走兜底策略商品 ！！！");
@@ -38,7 +40,7 @@ public abstract class AbstractRaffleStrategy implements IRaffleStrategy {
                     .build();
         }
 
-        // 经过抽奖前的逻辑肯定会有商品ID获取到，因此不会为空
+        // 抽奖后
         return null;
 
     }
