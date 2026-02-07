@@ -1,4 +1,4 @@
-package com.hutu.domain.strategy.service.cache;
+package com.hutu.domain.strategy.repository.cache;
 
 import com.alicp.jetcache.anno.CacheType;
 import com.alicp.jetcache.anno.Cached;

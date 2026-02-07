@@ -3,7 +3,7 @@ package com.hutu.domain.strategy.service.armory;
 import cn.hutool.core.collection.CollectionUtil;
 import com.hutu.domain.strategy.model.entity.StrategyAwardEntity;
 import com.hutu.domain.strategy.model.entity.StrategyGuaranteeEntity;
-import com.hutu.domain.strategy.service.cache.StrategyCacheService;
+import com.hutu.domain.strategy.repository.cache.StrategyCacheService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,7 @@ package com.hutu.domain.strategy.service.rule.chain.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.hutu.domain.strategy.model.entity.StrategyGuaranteeEntity;
-import com.hutu.domain.strategy.service.cache.StrategyCacheService;
+import com.hutu.domain.strategy.repository.cache.StrategyCacheService;
 import com.hutu.domain.strategy.service.rule.chain.AbstractLogicChain;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
