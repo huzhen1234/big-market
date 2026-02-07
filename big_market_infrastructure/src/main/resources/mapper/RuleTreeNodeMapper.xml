@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hutu.infrastructure.persistent.mapper.RuleTreeNodeMapper">
+
+    <resultMap id="BaseResultMap" type="com.hutu.infrastructure.persistent.po.RuleTreeNode">
+            <id property="id" column="id" />
+            <result property="treeId" column="tree_id" />
+            <result property="ruleKey" column="rule_key" />
+            <result property="ruleDesc" column="rule_desc" />
+            <result property="ruleValue" column="rule_value" />
+            <result property="createTime" column="create_time" />
+            <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,tree_id,rule_key,rule_desc,rule_value,create_time,
+        update_time
+    </sql>
+</mapper>
