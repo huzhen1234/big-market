@@ -24,9 +24,8 @@ public class DecisionTreeEngine implements IDecisionTreeEngine {
 
 
     @Override
-    public TreeActionEntity.StrategyAwardVO process(String userId, Long strategyId, Integer awardId) {
+    public TreeActionEntity.StrategyAwardVO process(Long userId, Long strategyId, Long awardId,RuleTreeVO ruleTreeVO) {
         TreeActionEntity.StrategyAwardVO strategyAwardVO = null;
-        RuleTreeVO ruleTreeVO = buildRuleTree();
         // 获取基础信息
         String nextNode = ruleTreeVO.getTreeRootRuleNode();
         Map<String, RuleTreeNodeVO> treeNodeMap = ruleTreeVO.getTreeNodeMap();
@@ -74,8 +73,4 @@ public class DecisionTreeEngine implements IDecisionTreeEngine {
         }
     }
 
-    @Override
-    public RuleTreeVO buildRuleTree() {
-        return null;
-    }
 }
