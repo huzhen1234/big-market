@@ -18,7 +18,7 @@ public class StrategyRuleRepository implements IStrategyRuleRepository {
     @Resource
     private StrategyRuleMapper strategyRuleMapper;
 
-    // todo
+    // todo 逻辑改动点
     @Override
     public StrategyRuleEntity findByStrategyIdAndAwardId(Long strategyId, Long awardId) {
         LambdaQueryWrapper<StrategyRule> queryWrapper = new LambdaQueryWrapper<>();
@@ -43,6 +43,7 @@ public class StrategyRuleRepository implements IStrategyRuleRepository {
                     StrategyRuleModelEnum modelEnum =
                             StrategyRuleModelEnum.valueOf(model.toUpperCase());
                     int paramValue = Integer.parseInt(param);
+                    strategyRuleEntity.setModelEnum(modelEnum);
                     switch (modelEnum) {
                         case RANDOM_SCORE:
                             strategyRuleEntity.setRandomScore(paramValue);
@@ -52,9 +53,6 @@ public class StrategyRuleRepository implements IStrategyRuleRepository {
                             return strategyRuleEntity;
                         case LUCK:
                             strategyRuleEntity.setLuck(paramValue);
-                            return strategyRuleEntity;
-                        case RULE_BLACKLIST:
-                            strategyRuleEntity.setRuleBlacklist(paramValue);
                             return strategyRuleEntity;
                         default:
                             break;

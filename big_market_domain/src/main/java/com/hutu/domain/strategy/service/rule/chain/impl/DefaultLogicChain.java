@@ -2,6 +2,7 @@ package com.hutu.domain.strategy.service.rule.chain.impl;
 
 import com.hutu.domain.strategy.service.armory.IStrategyService;
 import com.hutu.domain.strategy.service.rule.chain.AbstractLogicChain;
+import com.hutu.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -24,8 +25,12 @@ public class DefaultLogicChain extends AbstractLogicChain {
      * 兜底抽奖，抽的是原始的(未包含权重的)
      */
     @Override
-    public Long doChain(Long strategyId, Long userId) {
+    public DefaultChainFactory.StrategyAwardVO doChain(Long strategyId, Long userId) {
         log.info("兜底抽奖，放行");
-        return strategyService.findOriginStrategyAwardId(strategyId, userId);
+        Long awardId = strategyService.findOriginStrategyAwardId(strategyId, userId);
+        return DefaultChainFactory.StrategyAwardVO.builder()
+                .awardId(awardId)
+                .logicModel(RULE_DEFAULT)
+                .build();
     }
 }

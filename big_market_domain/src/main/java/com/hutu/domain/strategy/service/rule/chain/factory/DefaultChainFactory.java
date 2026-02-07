@@ -4,6 +4,10 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.json.JSONUtil;
 import com.hutu.domain.strategy.repository.IStrategyGuaranteeRepository;
 import com.hutu.domain.strategy.service.rule.chain.ILogicChain;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -72,5 +76,16 @@ public class DefaultChainFactory {
 
         log.info("责任链 {}", JSONUtil.toJsonStr(head));
         return head;
+    }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class StrategyAwardVO {
+        /** 抽奖奖品ID - 内部流转使用 */
+        private Long awardId;
+        /**  */
+        private String logicModel;
     }
 }
