@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
 public class RuleLuckAwardLogicTreeNode implements ILogicTreeNode {
 
     @Override
-    public TreeActionEntity logic(String userId, Long strategyId, Integer awardId) {
+    public TreeActionEntity logic(Long userId, Long strategyId, Long awardId) {
         return TreeActionEntity.builder()
                 .ruleLogicCheckType(RuleLogicCheckTypeVO.TAKE_OVER)
                 .strategyAwardVO(TreeActionEntity.StrategyAwardVO.builder()
-                        .awardId(101)
+                        .awardId(101L)
                         .awardRuleValue("1,100")
                         .build())
                 .build();

@@ -27,7 +27,7 @@ public class TreeActionEntity {
     @NoArgsConstructor
     public static class StrategyAwardVO {
         /** 抽奖奖品ID - 内部流转使用 */
-        private Integer awardId;
+        private Long awardId;
         /** 抽奖奖品规则 */
         private String awardRuleValue;
     }

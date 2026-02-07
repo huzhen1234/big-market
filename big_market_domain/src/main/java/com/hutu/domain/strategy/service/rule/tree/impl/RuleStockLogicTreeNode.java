@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 public class RuleStockLogicTreeNode implements ILogicTreeNode {
 
     @Override
-    public TreeActionEntity logic(String userId, Long strategyId, Integer awardId) {
+    public TreeActionEntity logic(Long userId, Long strategyId, Long awardId) {
         return TreeActionEntity.builder()
                 .ruleLogicCheckType(RuleLogicCheckTypeVO.TAKE_OVER)
                 .build();
