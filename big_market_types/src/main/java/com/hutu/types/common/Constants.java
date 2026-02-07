@@ -30,6 +30,11 @@ public class Constants {
 
 
 
+    // --------------------------------------------规则树业务key----------------------------
+    public final static String RULE_TREE_KEY = "big_market_rule_tree_key_";
+
+
+
 
 
 

@@ -4,6 +4,8 @@ import com.alicp.jetcache.anno.CacheType;
 import com.alicp.jetcache.anno.Cached;
 import com.hutu.domain.strategy.model.entity.StrategyAwardEntity;
 import com.hutu.domain.strategy.model.entity.StrategyGuaranteeEntity;
+import com.hutu.domain.strategy.model.valobj.RuleTreeVO;
+import com.hutu.domain.strategy.repository.IRuleTreeRepository;
 import com.hutu.domain.strategy.repository.IStrategyGuaranteeRepository;
 import com.hutu.domain.strategy.repository.IStrategyRepository;
 import com.hutu.types.common.Constants;
@@ -21,6 +23,9 @@ public class StrategyCacheService {
 
     @Resource
     private IStrategyGuaranteeRepository guaranteeRepository;
+
+    @Resource
+    private IRuleTreeRepository ruleTreeRepository;
 
     /**
      * 组装策略奖品缓存
@@ -72,6 +77,22 @@ public class StrategyCacheService {
     )
     public StrategyGuaranteeEntity queryStrategyGuaranteeBlack(Long strategyId){
         return guaranteeRepository.queryStrategyGuaranteeBlack(strategyId);
+    }
+
+
+    /**
+     * 规则树 cache
+     * @param treeId 规则树 id
+     * @return 规则树
+     */
+    @Cached(
+            name = Constants.RULE_TREE_KEY,
+            key = "#treeId",
+            expire = -1,
+            cacheType = CacheType.BOTH
+    )
+    public RuleTreeVO buildRuleTree(String treeId){
+        return ruleTreeRepository.queryRuleTreeVOByTreeId(treeId);
     }
 
 
