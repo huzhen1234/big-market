@@ -9,7 +9,7 @@ import com.hutu.domain.strategy.model.valobj.TreeActionEntity;
  */
 public interface IDecisionTreeEngine {
 
-    TreeActionEntity.StrategyAwardData process(String userId, Long strategyId, Integer awardId);
+    TreeActionEntity.StrategyAwardVO process(String userId, Long strategyId, Integer awardId);
 
 
     RuleTreeVO buildRuleTree();

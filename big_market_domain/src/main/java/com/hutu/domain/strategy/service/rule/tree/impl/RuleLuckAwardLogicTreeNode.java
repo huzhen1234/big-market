@@ -17,7 +17,7 @@ public class RuleLuckAwardLogicTreeNode implements ILogicTreeNode {
     public TreeActionEntity logic(String userId, Long strategyId, Integer awardId) {
         return TreeActionEntity.builder()
                 .ruleLogicCheckType(RuleLogicCheckTypeVO.TAKE_OVER)
-                .strategyAwardData(TreeActionEntity.StrategyAwardData.builder()
+                .strategyAwardVO(TreeActionEntity.StrategyAwardVO.builder()
                         .awardId(101)
                         .awardRuleValue("1,100")
                         .build())

@@ -17,7 +17,7 @@ public class TreeActionEntity {
     // 规则引擎检查结果
     private RuleLogicCheckTypeVO ruleLogicCheckType;
     // 策略奖品数据
-    private StrategyAwardData strategyAwardData;
+    private StrategyAwardVO strategyAwardVO;
 
 
 
@@ -25,7 +25,7 @@ public class TreeActionEntity {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class StrategyAwardData {
+    public static class StrategyAwardVO {
         /** 抽奖奖品ID - 内部流转使用 */
         private Integer awardId;
         /** 抽奖奖品规则 */
