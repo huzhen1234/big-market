@@ -11,6 +11,7 @@ import com.hutu.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
 import com.hutu.domain.strategy.service.rule.tree.engine.IDecisionTreeEngine;
 import com.hutu.types.enums.StrategyRuleModelEnum;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -48,13 +49,16 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
      */
     @Override
     public TreeActionEntity.StrategyAwardVO raffleLogicTree(Long userId, Long strategyId, Long awardId) {
-        StrategyRuleEntity ruleEntity = strategyRuleRepository.findByStrategyIdAndAwardId(strategyId, awardId);
-        if (null == ruleEntity) {
+        String ruleModels = strategyRuleRepository.queryStrategyAwardRuleModels(strategyId, awardId);
+        // 如果对应该商品没有规则模型，则直接返回该商品(抽中了)
+        if (StringUtils.isEmpty(ruleModels)) {
             return TreeActionEntity.StrategyAwardVO.builder().awardId(awardId).build();
         }
-        StrategyRuleModelEnum modelEnum = ruleEntity.getModelEnum();
-        // todo 添加策略id与规则树业务id绑定
-        RuleTreeVO ruleTreeVO = cacheService.buildRuleTree();
+        // 查找对应的规则模型，在规则树中查找(构建)
+        RuleTreeVO ruleTreeVO = cacheService.buildRuleTree(ruleModels);
+        if (null == ruleTreeVO) {
+            throw new RuntimeException("存在抽奖策略配置的规则模型 Key，未在库表 rule_tree、rule_tree_node、rule_tree_line 配置对应的规则树信息 " + ruleModels);
+        }
         return treeEngine.process(userId, strategyId, awardId, ruleTreeVO);
     }
 }

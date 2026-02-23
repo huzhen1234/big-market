@@ -63,4 +63,13 @@ public class StrategyRuleRepository implements IStrategyRuleRepository {
         }
         return null;
     }
+
+    @Override
+    public String queryStrategyAwardRuleModels(Long strategyId, Long awardId) {
+        LambdaQueryWrapper<StrategyRule> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(StrategyRule::getStrategyId, strategyId)
+                .eq(StrategyRule::getAwardId, awardId);
+        StrategyRule strategyRule = strategyRuleMapper.selectOne(queryWrapper);
+        return strategyRule.getRuleModel();
+    }
 }
