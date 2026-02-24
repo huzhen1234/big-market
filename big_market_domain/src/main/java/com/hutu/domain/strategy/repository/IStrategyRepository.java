@@ -19,4 +19,12 @@ public interface IStrategyRepository {
      * @return 策略奖品列表
      */
     List<StrategyAwardEntity> queryAllStrategyAward(Long strategyId);
+
+    /**
+     * 减库存
+     *
+     * @param cacheKey 缓存key
+     * @return 是否成功
+     */
+    Boolean substractionAwardStock(String cacheKey);
 }

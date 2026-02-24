@@ -2,8 +2,6 @@ package com.hutu.types.common;
 
 public class Constants {
 
-    public final static String SPLIT = ",";
-
     // 策略奖品缓存key
     public final static String STRATEGY_AWARD_KEY_WITH_RATE = "big_market_strategy_award_rate_key_";
     // 策略权重缓存key
@@ -32,6 +30,13 @@ public class Constants {
 
     // --------------------------------------------规则树业务key----------------------------
     public final static String RULE_TREE_KEY = "big_market_rule_tree_key_";
+
+
+
+    // --------------------------------------------奖品库存key----------------------------
+    public final static String STRATEGY_AWARD_STOCK_KEY_TEMPLATE = "big_market_award_stock_key_%s_%s";
+
+
 
 
 

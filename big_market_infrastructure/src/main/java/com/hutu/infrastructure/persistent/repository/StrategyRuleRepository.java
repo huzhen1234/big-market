@@ -18,7 +18,7 @@ public class StrategyRuleRepository implements IStrategyRuleRepository {
     @Resource
     private StrategyRuleMapper strategyRuleMapper;
 
-    // todo 逻辑改动点
+    // todo 逻辑改动点 后续可能删除掉，只有单个，没有多个不用#连接
     @Override
     public StrategyRuleEntity findByStrategyIdAndAwardId(Long strategyId, Long awardId) {
         LambdaQueryWrapper<StrategyRule> queryWrapper = new LambdaQueryWrapper<>();

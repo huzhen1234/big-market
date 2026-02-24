@@ -11,6 +11,7 @@ import com.hutu.domain.strategy.model.entity.StrategyRuleEntity;
 public interface IStrategyRuleRepository {
 
     /**
+     * todo 后续删除或者修改
      * 根据策略id和奖品id查询策略商品规则
      * 涵盖所有商品规则模型，但是对于抽奖中则只有 锁次数 + 幸运奖
      * @param strategyId 策略id
@@ -18,6 +19,14 @@ public interface IStrategyRuleRepository {
      * @return 策略商品规则
      */
     StrategyRuleEntity findByStrategyIdAndAwardId(Long strategyId,Long awardId);
+
+    /**
+     * 查询策略商品规则模型
+     * @param strategyId 策略id
+     * @param awardId 奖品id
+     * @return 策略商品规则模型
+     */
+    String queryStrategyAwardRuleModels(Long strategyId,Long awardId);
 
 
 }
