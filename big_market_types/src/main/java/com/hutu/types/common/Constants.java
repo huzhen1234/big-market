@@ -55,6 +55,12 @@ public class Constants {
 
 
 
+    // --------------------------------------------规则树节点标志----------------------------
+    // todo 标记规则是树节点
+    public final static String RULE_TREE_NODE_FLAG_TRUE = "RULETREE";
+
+
+
 
 
 
