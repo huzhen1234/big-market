@@ -1,15 +1,13 @@
 package com.hutu.domain.strategy.service.raffle;
 
-import com.hutu.domain.strategy.model.entity.StrategyRuleEntity;
 import com.hutu.domain.strategy.model.valobj.RuleTreeVO;
 import com.hutu.domain.strategy.model.valobj.TreeActionEntity;
-import com.hutu.domain.strategy.repository.IStrategyRuleRepository;
+import com.hutu.domain.strategy.repository.IStrategyRepository;
 import com.hutu.domain.strategy.repository.cache.StrategyCacheService;
 import com.hutu.domain.strategy.service.AbstractRaffleStrategy;
 import com.hutu.domain.strategy.service.rule.chain.ILogicChain;
 import com.hutu.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
 import com.hutu.domain.strategy.service.rule.tree.engine.IDecisionTreeEngine;
-import com.hutu.types.enums.StrategyRuleModelEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -28,7 +26,7 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
     @Resource
     private StrategyCacheService cacheService;
     @Resource
-    private IStrategyRuleRepository strategyRuleRepository;
+    private IStrategyRepository strategyRepository;
     @Resource
     private IDecisionTreeEngine treeEngine;
 
@@ -49,7 +47,7 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
      */
     @Override
     public TreeActionEntity.StrategyAwardVO raffleLogicTree(Long userId, Long strategyId, Long awardId) {
-        String ruleModels = strategyRuleRepository.queryStrategyAwardRuleModels(strategyId, awardId);
+        String ruleModels = strategyRepository.queryStrategyAwardRuleModels(strategyId, awardId);
         // 如果对应该商品没有规则模型，则直接返回该商品(抽中了)
         if (StringUtils.isEmpty(ruleModels)) {
             return TreeActionEntity.StrategyAwardVO.builder().awardId(awardId).build();

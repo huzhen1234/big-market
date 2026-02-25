@@ -5,8 +5,6 @@ import com.alicp.jetcache.anno.Cached;
 import com.hutu.domain.strategy.model.entity.StrategyAwardEntity;
 import com.hutu.domain.strategy.model.entity.StrategyGuaranteeEntity;
 import com.hutu.domain.strategy.model.valobj.RuleTreeVO;
-import com.hutu.domain.strategy.repository.IRuleTreeRepository;
-import com.hutu.domain.strategy.repository.IStrategyGuaranteeRepository;
 import com.hutu.domain.strategy.repository.IStrategyRepository;
 import com.hutu.types.common.Constants;
 import org.springframework.stereotype.Service;
@@ -21,11 +19,6 @@ public class StrategyCacheService {
     @Resource
     private IStrategyRepository strategyRepository;
 
-    @Resource
-    private IStrategyGuaranteeRepository guaranteeRepository;
-
-    @Resource
-    private IRuleTreeRepository ruleTreeRepository;
 
     /**
      * 组装策略奖品缓存
@@ -60,7 +53,7 @@ public class StrategyCacheService {
             cacheType = CacheType.BOTH
     )
     public List<StrategyGuaranteeEntity> queryStrategyGuaranteeWeight(Long strategyId){
-        return guaranteeRepository.queryStrategyGuaranteeWeight(strategyId);
+        return strategyRepository.queryStrategyGuaranteeWeight(strategyId);
     }
 
 
@@ -76,7 +69,7 @@ public class StrategyCacheService {
             cacheType = CacheType.BOTH
     )
     public StrategyGuaranteeEntity queryStrategyGuaranteeBlack(Long strategyId){
-        return guaranteeRepository.queryStrategyGuaranteeBlack(strategyId);
+        return strategyRepository.queryStrategyGuaranteeBlack(strategyId);
     }
 
 
@@ -92,7 +85,7 @@ public class StrategyCacheService {
             cacheType = CacheType.BOTH
     )
     public RuleTreeVO buildRuleTree(String treeId){
-        return ruleTreeRepository.queryRuleTreeVOByTreeId(treeId);
+        return strategyRepository.queryRuleTreeVOByTreeId(treeId);
     }
 
 

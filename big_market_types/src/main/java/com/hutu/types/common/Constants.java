@@ -36,6 +36,8 @@ public class Constants {
     // --------------------------------------------奖品库存key----------------------------
     public final static String STRATEGY_AWARD_STOCK_KEY_TEMPLATE = "big_market_award_stock_key_%s_%s";
 
+    // --------------------------------------------写入奖品库存消费队列key----------------------------
+    public final static String STRATEGY_AWARD_STOCK_CONSUME_QUEUE_KEY = "big_market_award_stock_consume_queue_key";
 
 
 

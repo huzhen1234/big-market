@@ -2,7 +2,7 @@ package com.hutu.domain.strategy.service.rule.chain.factory;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.json.JSONUtil;
-import com.hutu.domain.strategy.repository.IStrategyGuaranteeRepository;
+import com.hutu.domain.strategy.repository.IStrategyRepository;
 import com.hutu.domain.strategy.service.rule.chain.ILogicChain;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,7 +29,7 @@ import static com.hutu.types.common.Constants.RULE_WEIGHT;
 public class DefaultChainFactory {
 
     private final Map<String, ILogicChain> chainMap;
-    private final IStrategyGuaranteeRepository repository;
+    private final IStrategyRepository repository;
 
     public ILogicChain createChain(Long strategyId) {
 
