@@ -277,10 +277,13 @@ public class StrategyRepository implements IStrategyRepository {
         redisService.setAtomicLong(cacheKey, awardCount);
     }
 
+
     @Override
     public void awardStockConsumeSendQueue(StrategyAwardStockKeyVO strategyAwardStockKeyVO) {
         String cacheKey = Constants.STRATEGY_AWARD_STOCK_CONSUME_QUEUE_KEY;
         RBlockingQueue<StrategyAwardStockKeyVO> blockingQueue = redisService.getBlockingQueue(cacheKey);
+        // 延迟3秒后将元素放入阻塞队列
+        // 目的：给系统一个缓冲时间，防止瞬时大量请求导致库存超卖
         RDelayedQueue<StrategyAwardStockKeyVO> delayedQueue = redisService.getDelayedQueue(blockingQueue);
         delayedQueue.offer(strategyAwardStockKeyVO, 3, TimeUnit.SECONDS);
     }
@@ -289,6 +292,7 @@ public class StrategyRepository implements IStrategyRepository {
     public StrategyAwardStockKeyVO takeQueueValue() {
         String cacheKey = Constants.STRATEGY_AWARD_STOCK_CONSUME_QUEUE_KEY;
         RBlockingQueue<StrategyAwardStockKeyVO> destinationQueue = redisService.getBlockingQueue(cacheKey);
+        // 阻塞式获取队列元素（如果没有元素会一直等待）
         return destinationQueue.poll();
     }
 

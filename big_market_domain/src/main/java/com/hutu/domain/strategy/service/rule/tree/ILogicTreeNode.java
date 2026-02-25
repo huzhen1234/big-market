@@ -4,6 +4,6 @@ import com.hutu.domain.strategy.model.valobj.TreeActionEntity;
 
 public interface ILogicTreeNode {
 
-    TreeActionEntity logic(Long userId, Long strategyId, Long awardId);
+    TreeActionEntity logic(Long userId, Long strategyId, Long awardId,String ruleValue);
 
 }
