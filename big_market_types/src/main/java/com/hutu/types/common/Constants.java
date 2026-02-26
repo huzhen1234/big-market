@@ -13,6 +13,9 @@ public class Constants {
     // 商品规则模型分隔符
     public final static String RULE_MODEL_SPLIT = "#";
 
+    // 树节点的分隔符
+    public final static String COLON = ":";
+
 
 
 
