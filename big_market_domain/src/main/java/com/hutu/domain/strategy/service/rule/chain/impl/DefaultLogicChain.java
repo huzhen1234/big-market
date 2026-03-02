@@ -12,7 +12,7 @@ import static com.hutu.types.common.Constants.RULE_DEFAULT;
 
 
 /**
- * 兜底链
+ * 默认链--原始概率
  */
 @Slf4j
 @Component(value = RULE_DEFAULT)
@@ -22,7 +22,7 @@ public class DefaultLogicChain extends AbstractLogicChain {
     private IStrategyService strategyService;
 
     /**
-     * 兜底抽奖，抽的是原始的(未包含权重的)
+     * 默认链--原始概率，抽的是原始的(未包含权重的)
      */
     @Override
     public DefaultChainFactory.StrategyAwardVO doChain(Long strategyId, Long userId) {

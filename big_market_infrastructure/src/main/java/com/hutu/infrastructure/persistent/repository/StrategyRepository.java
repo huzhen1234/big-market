@@ -36,6 +36,7 @@ import org.redisson.api.RBlockingQueue;
 import org.redisson.api.RDelayedQueue;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -316,5 +317,15 @@ public class StrategyRepository implements IStrategyRepository {
         } else {
             log.warn("更新奖品库存失败，可能库存已为0 strategyId:{} awardId:{}", strategyId, awardId);
         }
+    }
+
+    @Override
+    public void cacheStrategyAwardRate(String cacheKey, Map<Long, BigDecimal> awardRateMap) {
+        redisService.setValue(cacheKey, awardRateMap);
+    }
+
+    @Override
+    public Map<Long, BigDecimal> getStrategyAwardRate(String cacheKey) {
+        return redisService.getMap(cacheKey);
     }
 }

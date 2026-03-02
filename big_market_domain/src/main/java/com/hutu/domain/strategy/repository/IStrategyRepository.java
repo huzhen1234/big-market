@@ -6,7 +6,9 @@ import com.hutu.domain.strategy.model.entity.StrategyRuleEntity;
 import com.hutu.domain.strategy.model.valobj.RuleTreeVO;
 import com.hutu.domain.strategy.model.valobj.StrategyAwardStockKeyVO;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 策略服务仓储接口
@@ -28,6 +30,7 @@ public interface IStrategyRepository {
 
     /**
      * 根据策略id查询策略配置 权重
+     * 返回的是多条，因为可以配置多个条件下的权重，触发条件不一样
      * @param strategyId 策略id
      */
     List<StrategyGuaranteeEntity> queryStrategyGuaranteeWeight(Long strategyId);
@@ -112,4 +115,13 @@ public interface IStrategyRepository {
     void updateStrategyAwardStock(Long strategyId, Long awardId);
 
 
+    /**
+     * 缓存奖品概率
+     *
+     * @param cacheKey   缓存key
+     * @param awardRateMap 奖品概率Map
+     */
+    void cacheStrategyAwardRate(String cacheKey, Map<Long, BigDecimal> awardRateMap);
+
+    Map<Long, BigDecimal> getStrategyAwardRate(String cacheKey);
 }

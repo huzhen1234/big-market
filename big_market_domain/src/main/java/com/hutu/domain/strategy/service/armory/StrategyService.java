@@ -4,11 +4,14 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.hutu.domain.strategy.model.entity.StrategyAwardEntity;
 import com.hutu.domain.strategy.model.entity.StrategyGuaranteeEntity;
 import com.hutu.domain.strategy.repository.cache.StrategyCacheService;
+import com.hutu.types.common.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,50 +30,67 @@ public class StrategyService implements IStrategyService {
     // TODO 获取用户积分
     int score = 12345;
 
+
+    /**
+     * 装配概率
+     * @param strategyId 策略ID
+     */
     @Override
-    public Long findWeightStrategyAwardId(Long strategyId,Long userId) {
-        // 抽奖，获取所有策略奖品(未过滤出权重商品)
+    public boolean assembleLotteryStrategy(Long strategyId) {
+        // 抽奖，获取所有策略奖品-全量商品 -- 同时也缓存了每个策略商品的库存
         List<StrategyAwardEntity> strategyAwardEntities = cacheService.assembleLotteryStrategy(strategyId);
-        // 根据权重和个人积分情况来过滤奖品
-        StrategyGuaranteeEntity strategyGuaranteeEntity = matchWeightRule(strategyId, score);
+        // 默认装配配置【全量抽奖概率】
+        assembleLotteryOrigin(strategyAwardEntities,strategyId);
+        // 判断是否有权重规则
+        List<StrategyGuaranteeEntity> rules = cacheService.queryStrategyGuaranteeWeight(strategyId);
+        if (CollectionUtil.isEmpty(rules)) return true;
+        // 根据权重和个人积分情况来过滤奖品 --选择权重策略
+        StrategyGuaranteeEntity strategyGuaranteeEntity = matchWeightRule(rules, score);
         // 根据权重规则进行抽奖
-        return drawLotteryByWeightRule(strategyAwardEntities, strategyGuaranteeEntity);
+        assembleLotteryByWeightRule(strategyId,strategyAwardEntities, strategyGuaranteeEntity);
+        return true;
     }
 
-    @Override
-    public Long findOriginStrategyAwardId(Long strategyId, Long userId) {
-        // 抽奖，获取所有策略奖品(未过滤出权重商品)
-        List<StrategyAwardEntity> strategyAwardEntities = cacheService.assembleLotteryStrategy(strategyId);
-        return drawLotteryByOriginalRate(strategyAwardEntities);
+
+    public void assembleLotteryOrigin(List<StrategyAwardEntity> strategyAwardEntities,Long strategyId) {
+        cacheDrawLotteryByOriginalRate(strategyId,strategyAwardEntities);
     }
 
-    private Long drawLotteryByWeightRule(List<StrategyAwardEntity> strategyAwardEntities, StrategyGuaranteeEntity strategyGuaranteeEntity) {
-        // 如果没有权重规则，则使用原始概率进行抽奖
-        if (strategyGuaranteeEntity == null){
-            return null;
-        }
+    private void assembleLotteryByWeightRule(Long strategyId,List<StrategyAwardEntity> strategyAwardEntities, StrategyGuaranteeEntity strategyGuaranteeEntity) {
         List<StrategyGuaranteeEntity.AwardWeight> guaranteeAwards = strategyGuaranteeEntity.getGuaranteeAwards();
         if (CollectionUtil.isEmpty(guaranteeAwards)) {
-            // todo 如果规则中未配置任何奖品，则无奖品可抽
-            return -1L;
+            log.error("权重规则配置错误，没有匹配的奖品");
+            throw new RuntimeException("权重规则配置错误");
         }
         // 创建奖品的权重映射
         Map<Long, Integer> awardWeightMap = new HashMap<>();
-        int totalWeight = 0;
         for (StrategyGuaranteeEntity.AwardWeight awardWeight : guaranteeAwards) {
             awardWeightMap.put(awardWeight.getAwardId(), awardWeight.getWeight());
-            totalWeight += awardWeight.getWeight();
         }
         // 过滤出规则中存在的奖品
         List<StrategyAwardEntity> validAwards = strategyAwardEntities.stream()
                 .filter(award -> awardWeightMap.containsKey(award.getAwardId()))
                 .collect(Collectors.toList());
         if (CollectionUtil.isEmpty(validAwards)) {
-            // todo
-            return -1L;
+            log.error("权重规则配置错误，策略商品不包含权重商品");
+            throw new RuntimeException("权重规则配置错误");
         }
-        // 生成1到totalWeight之间的随机整数
-        int randomValue = ThreadLocalRandom.current().nextInt(1, totalWeight + 1);
+        
+        String cacheKey = String.format(Constants.STRATEGY_AWARD_RATE_KEY_TEMPLATE, strategyId);
+        // 将权重转换为概率并计算累计概率
+        Map<Long, BigDecimal> awardRateMap = new HashMap<>();
+        BigDecimal cumulativeRate = BigDecimal.ZERO;
+        for (StrategyAwardEntity award : validAwards) {
+            Long awardId = award.getAwardId();
+            Integer weight = awardWeightMap.get(awardId);
+            // 将权重除以100转换为概率（例如权重50转换为0.50）
+            BigDecimal probability = new BigDecimal(weight).divide(new BigDecimal(100), 4, RoundingMode.HALF_UP);
+            cumulativeRate = cumulativeRate.add(probability);
+            awardRateMap.put(awardId, cumulativeRate);
+        }
+        // 缓存奖品概率
+        cacheService.cacheStrategyAwardRate(cacheKey, awardRateMap);
+/*        // 生成1到totalWeight之间的随机整数
         log.info("抽奖，随机数：{}", randomValue);
         int currentWeight = 0;
         for (StrategyAwardEntity award : validAwards) {
@@ -79,10 +99,24 @@ public class StrategyService implements IStrategyService {
             if (randomValue <= currentWeight) {
                 return award.getAwardId();
             }
-        }
-        // todo 理论上不会走到这里，但为了安全返回最后一个奖品
-        return validAwards.get(validAwards.size() - 1).getAwardId();
+        }*/
     }
+
+    private void cacheDrawLotteryByOriginalRate(Long strategyId,List<StrategyAwardEntity> strategyAwardEntities) {
+        BigDecimal cumulative = BigDecimal.ZERO;
+        for (StrategyAwardEntity award : strategyAwardEntities) {
+            cumulative = cumulative.add(award.getWinRate());
+            award.setCumulativeRate(cumulative);
+        }
+        // strategyAwardEntities排序，根据 cumulativeRate来排序，从小到大，然后转成map key为awardId，value为cumulativeRate概率
+        strategyAwardEntities.sort(Comparator.comparing(StrategyAwardEntity::getCumulativeRate));
+        Map<Long, BigDecimal> awardRateMap = strategyAwardEntities.stream()
+                .collect(Collectors.toMap(StrategyAwardEntity::getAwardId, StrategyAwardEntity::getCumulativeRate));
+        String cacheKey = String.format(Constants.STRATEGY_AWARD_RATE_KEY_TEMPLATE, strategyId);
+        // 缓存奖品概率
+        cacheService.cacheStrategyAwardRate(cacheKey, awardRateMap);
+    }
+
 
     private Long drawLotteryByOriginalRate(List<StrategyAwardEntity> strategyAwardEntities) {
         BigDecimal cumulative = BigDecimal.ZERO;
@@ -101,15 +135,12 @@ public class StrategyService implements IStrategyService {
         return null;
     }
 
-
-    private StrategyGuaranteeEntity matchWeightRule(Long strategyId, Integer userScore) {
-        List<StrategyGuaranteeEntity> rules = cacheService.queryStrategyGuaranteeWeight(strategyId);
+    private StrategyGuaranteeEntity matchWeightRule(List<StrategyGuaranteeEntity> rules, Integer userScore) {
         // 用于记录匹配的规则
         StrategyGuaranteeEntity matchedRule = null;
         for (StrategyGuaranteeEntity rule : rules) {
             if (MIN_SCORE.equals(rule.getTriggerCondition())) {
                 int minScore = Integer.parseInt(rule.getTriggerValue());
-
                 // 如果用户积分大于等于当前阈值，记录此规则
                 if (userScore >= minScore) {
                     matchedRule = rule;
@@ -122,6 +153,5 @@ public class StrategyService implements IStrategyService {
         }
         return matchedRule;
     }
-
 
 }

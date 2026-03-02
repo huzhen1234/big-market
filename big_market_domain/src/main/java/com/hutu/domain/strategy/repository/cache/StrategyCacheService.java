@@ -10,8 +10,10 @@ import com.hutu.types.common.Constants;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StrategyCacheService {
@@ -89,5 +91,16 @@ public class StrategyCacheService {
     }
 
 
+    /**
+     * 缓存策略奖品累计概率
+     * @param cacheKey 缓存key
+     * @param awardRateMap 奖品累计概率Map
+     */
+    public void cacheStrategyAwardRate(String cacheKey, Map<Long, BigDecimal> awardRateMap) {
+        strategyRepository.cacheStrategyAwardRate(cacheKey, awardRateMap);
+    }
 
+    public Map<Long, BigDecimal> getStrategyAwardRate(String cacheKey) {
+        return strategyRepository.getStrategyAwardRate(cacheKey);
+    }
 }
