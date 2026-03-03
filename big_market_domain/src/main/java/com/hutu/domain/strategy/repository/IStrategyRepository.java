@@ -124,4 +124,9 @@ public interface IStrategyRepository {
     void cacheStrategyAwardRate(String cacheKey, Map<Long, BigDecimal> awardRateMap);
 
     Map<Long, BigDecimal> getStrategyAwardRate(String cacheKey);
+
+    /**
+     * 根据随机值获取奖品ID
+     */
+    Long getStrategyAwardAssemble(String cacheKey, double nextDouble);
 }

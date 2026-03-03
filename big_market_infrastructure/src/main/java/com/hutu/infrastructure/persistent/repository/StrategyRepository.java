@@ -326,6 +326,27 @@ public class StrategyRepository implements IStrategyRepository {
 
     @Override
     public Map<Long, BigDecimal> getStrategyAwardRate(String cacheKey) {
-        return redisService.getMap(cacheKey);
+        // 修改为 getValue，反序列化后仍是 LinkedHashMap
+        return redisService.getValue(cacheKey);
+    }
+
+    @Override
+    public Long getStrategyAwardAssemble(String cacheKey, double randomValue) {
+        // 修改为 getValue，获取有序的 LinkedHashMap
+        Map<Long, BigDecimal> awardRateMap = redisService.getValue(cacheKey);
+
+        if (awardRateMap == null || awardRateMap.isEmpty()) {
+            log.error("未找到策略奖品的概率配置，cacheKey: {}", cacheKey);
+            return null;
+        }
+
+        // 遍历 LinkedHashMap，找到第一个大于等于随机数的累计概率
+        for (Map.Entry<Long, BigDecimal> entry : awardRateMap.entrySet()) {
+            if (randomValue <= entry.getValue().doubleValue()) {
+                return entry.getKey();
+            }
+        }
+        // todo 兜底：如果都没匹配到 幸运奖？？
+        return null;
     }
 }
