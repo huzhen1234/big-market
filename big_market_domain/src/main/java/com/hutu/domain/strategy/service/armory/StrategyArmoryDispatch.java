@@ -53,6 +53,7 @@ public class StrategyArmoryDispatch implements IStrategyArmory, IStrategyDispatc
         // 判断是否有权重规则
         List<StrategyGuaranteeEntity> rules = cacheService.queryStrategyGuaranteeWeight(strategyId);
         if (CollectionUtil.isEmpty(rules)) return true;
+
         // 根据权重和个人积分情况来过滤奖品 --选择权重策略
         StrategyGuaranteeEntity strategyGuaranteeEntity = matchWeightRule(rules, score);
         // 根据权重规则进行抽奖
@@ -116,6 +117,49 @@ public class StrategyArmoryDispatch implements IStrategyArmory, IStrategyDispatc
         // 缓存奖品概率
         cacheService.cacheStrategyAwardRate(cacheKey, awardRateMap);
     }
+
+    public void initWeightRules(Long strategyId, List<StrategyGuaranteeEntity> rules) {
+        // 1. 对规则按积分阈值升序排序
+        rules.sort(Comparator.comparingInt(r -> Integer.parseInt(r.getTriggerValue())));
+
+        // 2. 对每个规则计算概率表并缓存
+        for (StrategyGuaranteeEntity rule : rules) {
+            String triggerValue = rule.getTriggerValue(); // 例如 "3000"
+            List<StrategyGuaranteeEntity.AwardWeight> awardWeights = rule.getGuaranteeAwards();
+
+            // 计算该规则下各奖品的概率（累积概率形式，方便随机抽取）
+            Map<Long, BigDecimal> rateMap = calculateCumulativeProbability(awardWeights);
+
+            // 缓存key包含策略ID和积分阈值
+            String cacheKey = "strategy_weight_rate:" + strategyId + ":" + triggerValue;
+            cacheService.cacheStrategyAwardRate(cacheKey, rateMap);
+        }
+    }
+
+
+    /**
+     * 计算累积概率
+     * 假设权重总和不一定为100，需要归一化处理
+     */
+    private Map<Long, BigDecimal> calculateCumulativeProbability(List<StrategyGuaranteeEntity.AwardWeight> awardWeights) {
+        // 计算总权重
+        int totalWeight = awardWeights.stream().mapToInt(StrategyGuaranteeEntity.AwardWeight::getWeight).sum();
+
+        Map<Long, BigDecimal> cumulativeRateMap = new HashMap<>();
+        BigDecimal cumulative = BigDecimal.ZERO;
+        for (StrategyGuaranteeEntity.AwardWeight aw : awardWeights) {
+            // 权重转换为概率（保留4位小数，四舍五入）
+            BigDecimal probability = BigDecimal.valueOf(aw.getWeight())
+                    .divide(BigDecimal.valueOf(totalWeight), 4, RoundingMode.HALF_UP);
+            cumulative = cumulative.add(probability);
+            cumulativeRateMap.put(aw.getAwardId(), cumulative);
+        }
+        return cumulativeRateMap;
+    }
+
+
+
+    // todo 这一步不能用在这里
     private StrategyGuaranteeEntity matchWeightRule(List<StrategyGuaranteeEntity> rules, Integer userScore) {
         // 用于记录匹配的规则
         StrategyGuaranteeEntity matchedRule = null;
