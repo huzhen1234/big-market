@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 import static com.hutu.types.common.Constants.MIN_SCORE;
@@ -48,53 +47,19 @@ public class StrategyArmoryDispatch implements IStrategyArmory, IStrategyDispatc
     public boolean assembleLotteryStrategy(Long strategyId) {
         // 抽奖，获取所有策略奖品-全量商品 -- 同时也缓存了每个策略商品的库存
         List<StrategyAwardEntity> strategyAwardEntities = cacheService.assembleLotteryStrategy(strategyId);
+
+        if (CollectionUtil.isEmpty(strategyAwardEntities)) {
+            log.error("策略 ID: {} 没有配置任何奖品", strategyId);
+            throw new RuntimeException("策略没有配置任何奖品");
+        }
         // 默认装配配置【全量抽奖概率】
         cacheDrawLotteryByOriginalRate(strategyId, strategyAwardEntities);
         // 判断是否有权重规则
         List<StrategyGuaranteeEntity> rules = cacheService.queryStrategyGuaranteeWeight(strategyId);
         if (CollectionUtil.isEmpty(rules)) return true;
-
-        // 根据权重和个人积分情况来过滤奖品 --选择权重策略
-        StrategyGuaranteeEntity strategyGuaranteeEntity = matchWeightRule(rules, score);
-        // 根据权重规则进行抽奖
-        assembleLotteryByWeightRule(strategyId, strategyAwardEntities, strategyGuaranteeEntity);
+        // 根据权重初始化抽奖概率
+        initWeightRules(strategyId, rules, strategyAwardEntities);
         return true;
-    }
-
-    private void assembleLotteryByWeightRule(Long strategyId, List<StrategyAwardEntity> strategyAwardEntities, StrategyGuaranteeEntity strategyGuaranteeEntity) {
-        List<StrategyGuaranteeEntity.AwardWeight> guaranteeAwards = strategyGuaranteeEntity.getGuaranteeAwards();
-        if (CollectionUtil.isEmpty(guaranteeAwards)) {
-            log.error("权重规则配置错误，没有匹配的奖品");
-            throw new RuntimeException("权重规则配置错误");
-        }
-        // 创建奖品的权重映射
-        Map<Long, Integer> awardWeightMap = new HashMap<>();
-        for (StrategyGuaranteeEntity.AwardWeight awardWeight : guaranteeAwards) {
-            awardWeightMap.put(awardWeight.getAwardId(), awardWeight.getWeight());
-        }
-        // 过滤出规则中存在的奖品
-        List<StrategyAwardEntity> validAwards = strategyAwardEntities.stream()
-                .filter(award -> awardWeightMap.containsKey(award.getAwardId()))
-                .collect(Collectors.toList());
-        if (CollectionUtil.isEmpty(validAwards)) {
-            log.error("权重规则配置错误，策略商品不包含权重商品");
-            throw new RuntimeException("权重规则配置错误");
-        }
-
-        String cacheKey = String.format(Constants.STRATEGY_AWARD_RATE_KEY_TEMPLATE, strategyId);
-        // 将权重转换为概率并计算累计概率
-        Map<Long, BigDecimal> awardRateMap = new HashMap<>();
-        BigDecimal cumulativeRate = BigDecimal.ZERO;
-        for (StrategyAwardEntity award : validAwards) {
-            Long awardId = award.getAwardId();
-            Integer weight = awardWeightMap.get(awardId);
-            // 将权重除以100转换为概率（例如权重50转换为0.50）
-            BigDecimal probability = new BigDecimal(weight).divide(new BigDecimal(100), 4, RoundingMode.HALF_UP);
-            cumulativeRate = cumulativeRate.add(probability);
-            awardRateMap.put(awardId, cumulativeRate);
-        }
-        // 缓存奖品概率
-        cacheService.cacheStrategyAwardRate(cacheKey, awardRateMap);
     }
 
     public void cacheDrawLotteryByOriginalRate(Long strategyId, List<StrategyAwardEntity> strategyAwardEntities) {
@@ -118,21 +83,51 @@ public class StrategyArmoryDispatch implements IStrategyArmory, IStrategyDispatc
         cacheService.cacheStrategyAwardRate(cacheKey, awardRateMap);
     }
 
-    public void initWeightRules(Long strategyId, List<StrategyGuaranteeEntity> rules) {
+    public void initWeightRules(Long strategyId, List<StrategyGuaranteeEntity> rules, List<StrategyAwardEntity> strategyAwardEntities) {
+        // 创建策略奖品的 ID 集合，用于快速查找
+        Map<Long, StrategyAwardEntity> awardMap = strategyAwardEntities.stream()
+                .collect(Collectors.toMap(
+                        StrategyAwardEntity::getAwardId,
+                        award -> award
+                ));
+
         // 1. 对规则按积分阈值升序排序
         rules.sort(Comparator.comparingInt(r -> Integer.parseInt(r.getTriggerValue())));
 
         // 2. 对每个规则计算概率表并缓存
         for (StrategyGuaranteeEntity rule : rules) {
-            String triggerValue = rule.getTriggerValue(); // 例如 "3000"
+            String triggerValue = rule.getTriggerValue();
             List<StrategyGuaranteeEntity.AwardWeight> awardWeights = rule.getGuaranteeAwards();
 
-            // 计算该规则下各奖品的概率（累积概率形式，方便随机抽取）
-            Map<Long, BigDecimal> rateMap = calculateCumulativeProbability(awardWeights);
+            if (CollectionUtil.isEmpty(awardWeights)) {
+                log.warn("策略 ID: {}, 触发值：{} 的权重规则没有配置奖品，跳过", strategyId, triggerValue);
+                continue;
+            }
 
-            // 缓存key包含策略ID和积分阈值
-            String cacheKey = "strategy_weight_rate:" + strategyId + ":" + triggerValue;
+            // 过滤出在策略商品中存在的奖品
+            List<StrategyGuaranteeEntity.AwardWeight> validAwardWeights = awardWeights.stream()
+                    .filter(awardWeight -> awardMap.containsKey(awardWeight.getAwardId()))
+                    .collect(Collectors.toList());
+
+            if (CollectionUtil.isEmpty(validAwardWeights)) {
+                log.error("策略 ID: {}, 触发值：{} 的权重规则配置的奖品在策略商品中不存在，跳过",
+                        strategyId, triggerValue);
+                continue;
+            }
+
+            if (validAwardWeights.size() != awardWeights.size()) {
+                log.warn("策略 ID: {}, 触发值：{} 的权重规则中有 {} 个奖品在策略商品中不存在，已过滤",
+                        strategyId, triggerValue, awardWeights.size() - validAwardWeights.size());
+            }
+
+            // 计算该规则下各奖品的概率（累积概率形式，方便随机抽取）
+            Map<Long, BigDecimal> rateMap = calculateCumulativeProbability(validAwardWeights);
+
+            // 缓存 key 包含策略 ID 和积分阈值
+            String cacheKey = String.format(Constants.STRATEGY_AWARD_RATE_KEY_WITH_WEIGHT_TEMPLATE, strategyId, triggerValue);
             cacheService.cacheStrategyAwardRate(cacheKey, rateMap);
+            log.info("策略 ID: {}, 触发值：{}, 缓存权重概率成功，有效奖品数：{}",
+                    strategyId, triggerValue, validAwardWeights.size());
         }
     }
 
@@ -156,7 +151,6 @@ public class StrategyArmoryDispatch implements IStrategyArmory, IStrategyDispatc
         }
         return cumulativeRateMap;
     }
-
 
 
     // todo 这一步不能用在这里

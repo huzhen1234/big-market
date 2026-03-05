@@ -12,6 +12,8 @@ public class Constants {
 
     // 策略奖品累计概率缓存key模板
     public final static String STRATEGY_AWARD_RATE_KEY_TEMPLATE = "big_market_strategy_award_rate_key_%s";
+    // 策略奖品累计概率缓存key - 权重模板
+    public final static String STRATEGY_AWARD_RATE_KEY_WITH_WEIGHT_TEMPLATE = "big_market_strategy_award_rate_key_%s_%s";
 
     // 商品规则模型分隔符
     public final static String RULE_MODEL_SPLIT = "#";
