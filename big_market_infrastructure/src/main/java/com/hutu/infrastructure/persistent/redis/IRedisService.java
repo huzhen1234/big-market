@@ -272,4 +272,6 @@ public interface IRedisService {
 
     Boolean setNx(String key);
 
+    <T> Boolean setNxWithExpire(String key, T value, long seconds);
+
 }

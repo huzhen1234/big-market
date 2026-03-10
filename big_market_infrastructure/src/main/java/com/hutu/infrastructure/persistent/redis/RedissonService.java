@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class RedissonService implements IRedisService {
@@ -146,11 +147,6 @@ public class RedissonService implements IRedisService {
     }
 
     @Override
-    public RSemaphore getSemaphore(String key) {
-        return redissonClient.getSemaphore(key);
-    }
-
-    @Override
     public RPermitExpirableSemaphore getPermitExpirableSemaphore(String key) {
         return redissonClient.getPermitExpirableSemaphore(key);
     }
@@ -178,6 +174,52 @@ public class RedissonService implements IRedisService {
     @Override
     public Boolean setNx(String key) {
         return redissonClient.getBucket(key).compareAndSet(null, "lock");
+    }
+
+    /**
+     * 设置键并添加过期时间
+     *
+     * @param key     键
+     * @param value   值
+     * @param seconds 过期时间（秒）
+     */
+    public <T> Boolean setNxWithExpire(String key, T value, long seconds) {
+        RBucket<T> bucket = redissonClient.getBucket(key);
+        // trySet 是原子操作，只有在 key 不存在时才设置成功
+        return bucket.trySet(value, seconds, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 获取信号量
+     *
+     * @param key 键
+     * @return 信号量对象
+     */
+    @Override
+    public RSemaphore getSemaphore(String key) {
+        return redissonClient.getSemaphore(key);
+    }
+
+    /**
+     * 尝试获取信号量（立即返回）
+     *
+     * @param key 键
+     * @return 是否成功
+     */
+    public boolean tryAcquireSemaphore(String key) {
+        RSemaphore semaphore = redissonClient.getSemaphore(key);
+        return semaphore.tryAcquire();
+    }
+
+    /**
+     * 初始化信号量（设置初始值）
+     *
+     * @param key   键
+     * @param count 初始数量
+     */
+    public void initSemaphore(String key, int count) {
+        RSemaphore semaphore = redissonClient.getSemaphore(key);
+        semaphore.trySetPermits(count);
     }
 
 }
