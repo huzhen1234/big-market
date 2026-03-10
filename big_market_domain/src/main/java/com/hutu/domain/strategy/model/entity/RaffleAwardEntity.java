@@ -23,6 +23,6 @@ public class RaffleAwardEntity implements Serializable {
     private Long strategyId;
     /** 奖品ID */
     private Long awardId;
-    /** 奖品配置信息 */
+    /** todo奖品配置信息 */
     private String awardConfig;
 }

@@ -7,9 +7,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>big_market_trigger</artifactId>
+    <artifactId>big_market_api</artifactId>
     <packaging>jar</packaging>
-    <name>big_market_trigger</name>
 
 
     <properties>
@@ -19,13 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>com.hutu</groupId>
-            <artifactId>big_market_domain</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.hutu</groupId>
-            <artifactId>big_market_api</artifactId>
+            <artifactId>big_market_types</artifactId>
         </dependency>
     </dependencies>
-
 </project>
