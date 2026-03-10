@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
- * 库存扣减节点
+ * todo 库存扣减节点
  */
 @Slf4j
 @Component("rule_stock")
