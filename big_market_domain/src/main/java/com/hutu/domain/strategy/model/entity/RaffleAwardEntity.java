@@ -25,4 +25,6 @@ public class RaffleAwardEntity implements Serializable {
     private Long awardId;
     /** todo奖品配置信息 */
     private String awardConfig;
+    /** TODO 奖品顺序号 */
+    private Integer sort;
 }

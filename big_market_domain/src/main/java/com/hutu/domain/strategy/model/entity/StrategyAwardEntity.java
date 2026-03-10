@@ -47,6 +47,21 @@ public class StrategyAwardEntity implements Serializable {
     private BigDecimal winRate;
 
     /**
+     * 奖品标题
+     */
+    private String awardTitle;
+
+    /**
+     * 奖品二级标题
+     */
+    private String awardSubtitle;
+
+    /**
+     * 排序值，越小越靠前
+     */
+    private Integer sort;
+
+    /**
      * ⭐ 累计概率上限（运行期计算，不落库）
      * 例如：0.55 / 0.75 / 0.85 ...
      */

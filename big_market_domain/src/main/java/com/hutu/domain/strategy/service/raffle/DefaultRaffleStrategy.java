@@ -1,10 +1,14 @@
 package com.hutu.domain.strategy.service.raffle;
 
+import com.hutu.domain.strategy.model.entity.StrategyAwardEntity;
 import com.hutu.domain.strategy.model.valobj.RuleTreeVO;
+import com.hutu.domain.strategy.model.valobj.StrategyAwardStockKeyVO;
 import com.hutu.domain.strategy.model.valobj.TreeActionEntity;
 import com.hutu.domain.strategy.repository.IStrategyRepository;
 import com.hutu.domain.strategy.repository.cache.StrategyCacheService;
 import com.hutu.domain.strategy.service.AbstractRaffleStrategy;
+import com.hutu.domain.strategy.service.IRaffleAward;
+import com.hutu.domain.strategy.service.IRaffleStock;
 import com.hutu.domain.strategy.service.rule.chain.ILogicChain;
 import com.hutu.domain.strategy.service.rule.chain.factory.DefaultChainFactory;
 import com.hutu.domain.strategy.service.rule.tree.engine.IDecisionTreeEngine;
@@ -13,13 +17,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 默认的抽奖策略实现
  */
 @Slf4j
 @Service
-public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
+public class DefaultRaffleStrategy extends AbstractRaffleStrategy implements IRaffleStock, IRaffleAward {
 
     @Resource
     private DefaultChainFactory defaultChainFactory;
@@ -58,5 +63,20 @@ public class DefaultRaffleStrategy extends AbstractRaffleStrategy {
             throw new RuntimeException("存在抽奖策略配置的规则模型 Key，未在库表 rule_tree、rule_tree_node、rule_tree_line 配置对应的规则树信息 " + ruleModels);
         }
         return treeEngine.process(userId, strategyId, awardId, ruleTreeVO);
+    }
+
+    @Override
+    public List<StrategyAwardEntity> queryRaffleStrategyAwardList(Long strategyId) {
+        return cacheService.queryAllStrategyAward(strategyId);
+    }
+
+    @Override
+    public StrategyAwardStockKeyVO takeQueueValue() throws InterruptedException {
+        return strategyRepository.takeQueueValue();
+    }
+
+    @Override
+    public void updateStrategyAwardStock(Long strategyId, Long awardId) {
+        strategyRepository.updateStrategyAwardStock(strategyId, awardId);
     }
 }
