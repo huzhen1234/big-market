@@ -83,7 +83,7 @@ public class StrategyRepository implements IStrategyRepository {
                     .awardRemainCount(strategyAward.getAwardRemainCount())
                     .winRate(strategyAward.getWinRate())
                     .build());
-            // 为里面的奖品key映射奖品库存
+            // todo 为里面的奖品key映射奖品库存
             String key = String.format(
                     Constants.STRATEGY_AWARD_STOCK_KEY_TEMPLATE,
                     strategyAward.getStrategyId(),

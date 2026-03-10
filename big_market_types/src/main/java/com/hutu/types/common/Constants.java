@@ -21,6 +21,9 @@ public class Constants {
     // 树节点的分隔符
     public final static String COLON = ":";
 
+    // 缓存某个策略下所有商品
+    public final static String CACHE_STRATEGY_PRODUCT_KEY = "big_market_strategy_product_key_";
+
 
 
 

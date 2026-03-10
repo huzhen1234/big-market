@@ -41,6 +41,19 @@ public class StrategyCacheService {
         return list;
     }
 
+    @Cached(
+            name = Constants.CACHE_STRATEGY_PRODUCT_KEY,
+            key = "#strategyId",
+            expire = -1,
+            cacheType = CacheType.BOTH
+    )
+    public List<StrategyAwardEntity> queryAllStrategyAward(Long strategyId) {
+        List<StrategyAwardEntity> list =
+                strategyRepository.queryAllStrategyAward(strategyId);
+        list.sort(Comparator.comparing(StrategyAwardEntity::getWinRate));
+        return list;
+    }
+
 
     /**
      * 获取策略权重
