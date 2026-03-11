@@ -7,7 +7,7 @@ import java.util.Date;
 import lombok.Data;
 
 /**
- * 策略保底配置表
+ * 策略规则配置表
  * @TableName strategy_guarantee
  */
 @TableName(value ="strategy_guarantee")
@@ -26,7 +26,9 @@ public class StrategyGuarantee {
 
     /**
      * 策略 类型
-     * @see com.hutu.types.common.Constants
+     * @see com.hutu.types.common.Constants 抽奖策略规则类型
+     * 权重策略
+     * 黑名单策略
      */
     private String strategyType;
 
