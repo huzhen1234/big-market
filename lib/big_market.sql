@@ -43,6 +43,9 @@ CREATE TABLE `raffle_activity_sku` (
                                        KEY `idx_activity_id_activity_count_id` (`activity_id`,`activity_count_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- 为同一个活动创建多种配额 	stock_count_surplus	整个活动最多允许多少人参与（防止超卖）
+-- 全局的资源配置
+
 CREATE TABLE `raffle_activity_order` (
                                          `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
                                          `user_id` varchar(32) NOT NULL COMMENT '用户ID',
@@ -78,3 +81,6 @@ CREATE TABLE `raffle_activity_account` (
                                            PRIMARY KEY (`id`),
                                            UNIQUE KEY `uq_user_id_activity_id` (`user_id`,`activity_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='抽奖活动账户表';
+
+-- 此时如果登陆，购买增加抽奖机会时，会进行插入/更新次数。同时也会添加一个order记录(流水)
+-- raffle_activity_account.*_surplus	每个用户能抽多少次（防刷、促活）
