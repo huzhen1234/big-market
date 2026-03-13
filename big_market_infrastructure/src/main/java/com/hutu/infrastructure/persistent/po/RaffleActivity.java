@@ -25,6 +25,11 @@ public class RaffleActivity {
     private Long activityId;
 
     /**
+     * 策略ID，业务键 todo
+     */
+    private Long strategyId;
+
+    /**
      * 活动名称
      */
     private String activityName;
