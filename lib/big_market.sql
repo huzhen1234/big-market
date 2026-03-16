@@ -14,8 +14,6 @@ CREATE TABLE `raffle_activity` (
                                    KEY `idx_end_date_time` (`end_date_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='抽奖活动表';
 
--- 活动表中的“库存总量”和“库存剩余”是指该活动允许用户参与的总次数限制，是一种“参与配额”的控制机制，而不是商品库存。
--- 它用于防止活动被过度使用，属于运营层面的宏观控制。而具体的奖品库存由策略商品表管理。两者是不同维度的“库存”。
 
 CREATE TABLE `raffle_activity_count` (
                                          `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
@@ -28,6 +26,8 @@ CREATE TABLE `raffle_activity_count` (
                                          PRIMARY KEY (`id`),
                                          UNIQUE KEY `uq_activity_count_id` (`activity_count_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='抽奖活动次数配置表';
+
+-- raffle_activity_count：个人次数配额（用户维度，决定买一份能抽几次）
 
 CREATE TABLE `raffle_activity_sku` (
                                        `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
@@ -45,6 +45,7 @@ CREATE TABLE `raffle_activity_sku` (
 
 -- 为同一个活动创建多种配额 	stock_count_surplus	整个活动最多允许多少人参与（防止超卖）
 -- 全局的资源配置
+-- raffle_activity_sku 的库存：全局售卖总量（活动维度，决定这份套餐能卖多少份）。
 
 CREATE TABLE `raffle_activity_order` (
                                          `id` bigint(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
