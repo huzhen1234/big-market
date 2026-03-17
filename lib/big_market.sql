@@ -85,3 +85,7 @@ CREATE TABLE `raffle_activity_account` (
 
 -- 此时如果登陆，购买增加抽奖机会时，会进行插入/更新次数。同时也会添加一个order记录(流水)
 -- raffle_activity_account.*_surplus	每个用户能抽多少次（防刷、促活）
+
+
+
+更适合充值这种业务场景

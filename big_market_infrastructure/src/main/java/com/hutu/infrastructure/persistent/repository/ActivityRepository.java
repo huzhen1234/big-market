@@ -122,15 +122,7 @@ public class ActivityRepository implements IActivityRepository {
      */
     private void saveOrUpdateAccount(CreateOrderAggregate createOrderAggregate) {
         // 构建账户对象
-        RaffleActivityAccount raffleActivityAccount = new RaffleActivityAccount();
-        raffleActivityAccount.setUserId(createOrderAggregate.getUserId());
-        raffleActivityAccount.setActivityId(createOrderAggregate.getActivityId());
-        raffleActivityAccount.setTotalCount(createOrderAggregate.getTotalCount());
-        raffleActivityAccount.setTotalCountSurplus(createOrderAggregate.getTotalCount());
-        raffleActivityAccount.setDayCount(createOrderAggregate.getDayCount());
-        raffleActivityAccount.setDayCountSurplus(createOrderAggregate.getDayCount());
-        raffleActivityAccount.setMonthCount(createOrderAggregate.getMonthCount());
-        raffleActivityAccount.setMonthCountSurplus(createOrderAggregate.getMonthCount());
+        RaffleActivityAccount raffleActivityAccount = getRaffleActivityAccount(createOrderAggregate);
 
         // 尝试更新账户 - 使用 LambdaUpdateWrapper
         int count = raffleActivityAccountMapper.update(
@@ -144,5 +136,18 @@ public class ActivityRepository implements IActivityRepository {
         if (count == 0) {
             raffleActivityAccountMapper.insert(raffleActivityAccount);
         }
+    }
+
+    private static RaffleActivityAccount getRaffleActivityAccount(CreateOrderAggregate createOrderAggregate) {
+        RaffleActivityAccount raffleActivityAccount = new RaffleActivityAccount();
+        raffleActivityAccount.setUserId(createOrderAggregate.getUserId());
+        raffleActivityAccount.setActivityId(createOrderAggregate.getActivityId());
+        raffleActivityAccount.setTotalCount(createOrderAggregate.getTotalCount());
+        raffleActivityAccount.setTotalCountSurplus(createOrderAggregate.getTotalCount());
+        raffleActivityAccount.setDayCount(createOrderAggregate.getDayCount());
+        raffleActivityAccount.setDayCountSurplus(createOrderAggregate.getDayCount());
+        raffleActivityAccount.setMonthCount(createOrderAggregate.getMonthCount());
+        raffleActivityAccount.setMonthCountSurplus(createOrderAggregate.getMonthCount());
+        return raffleActivityAccount;
     }
 }
