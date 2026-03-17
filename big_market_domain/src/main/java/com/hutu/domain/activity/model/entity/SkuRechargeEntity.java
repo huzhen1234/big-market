@@ -1,7 +1,9 @@
 package com.hutu.domain.activity.model.entity;
 
 import lombok.Data;
-
+/**
+ * @description 活动商品充值实体对象
+ */
 @Data
 public class SkuRechargeEntity {
 
