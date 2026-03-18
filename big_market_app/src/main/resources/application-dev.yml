@@ -38,6 +38,21 @@ spring:
     retry-interval: 1000
     ping-interval: 60000
     keep-alive: true
+
+  kafka:
+    bootstrap-servers: ${kafka.host}:${kafka.port}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: demo-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false # 自动提交 offset
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    listener:
+      ack-mode: record # 每条消息处理完就提交 enable-auto-commit必须为false
+
 jetcache:
   statIntervalMinutes: 15          # 统计间隔（命中率、QPS）
   areaInCacheName: false           # cacheName 是否带 area 前缀
