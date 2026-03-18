@@ -7,7 +7,7 @@ import com.hutu.domain.activity.repository.IActivityRepository;
 import com.hutu.domain.activity.service.rule.factory.DefaultActivityChainFactory;
 
 /**
- * @description 抽奖活动的支撑类
+ * @description 抽奖活动的支撑类 减少抽象类的代码量
  */
 public class RaffleActivitySupport {
 
