@@ -2,6 +2,9 @@ package com.hutu.types.common;
 
 public class Constants {
 
+    // 下划线
+    public final static String UNDERLINE = "_";
+
     // 策略奖品缓存key
     public final static String STRATEGY_AWARD_KEY_WITH_RATE = "big_market_strategy_award_rate_key_";
     // 策略权重缓存key
@@ -73,6 +76,18 @@ public class Constants {
     public final static String RULE_TREE_NODE_FLAG_TRUE = "RULETREE";
 
 
+
+
+    // --------------------------------------------活动商品库存key----------------------------
+    public static String ACTIVITY_SKU_STOCK_COUNT_KEY = "activity_sku_stock_count_key_";
+
+
+    // --------------------------------------------活动商品库存kafka key----------------------------
+    public static String ACTIVITY_SKU_STOCK_COUNT_KAFKA_KEY = "activity_sku_stock_count_kafka_key";
+
+
+    // --------------------------------------------活动商品库存查询key----------------------------
+    public static String ACTIVITY_SKU_COUNT_QUERY_KEY = "activity_sku_count_query_key";;
 
 
 

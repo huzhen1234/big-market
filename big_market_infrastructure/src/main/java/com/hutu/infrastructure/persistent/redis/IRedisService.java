@@ -11,9 +11,11 @@ import org.redisson.api.RQueue;
 import org.redisson.api.RReadWriteLock;
 import org.redisson.api.RSemaphore;
 
+import java.util.concurrent.TimeUnit;
+
 
 /**
- * Redis 操作接口
+ * Redis 操作接口 todo
  * @author hutu
  */
 public interface IRedisService {
@@ -271,6 +273,9 @@ public interface IRedisService {
     Long getAtomicLong(String key);
 
     Boolean setNx(String key);
+
+    // 带过期时间
+    Boolean setNx(String key, long expired, TimeUnit timeUnit);
 
     <T> Boolean setNxWithExpire(String key, T value, long seconds);
 

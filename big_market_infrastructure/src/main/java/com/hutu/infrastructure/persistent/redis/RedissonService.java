@@ -176,6 +176,11 @@ public class RedissonService implements IRedisService {
         return redissonClient.getBucket(key).compareAndSet(null, "lock");
     }
 
+    @Override
+    public Boolean setNx(String key, long expired, TimeUnit timeUnit) {
+        return redissonClient.getBucket(key).trySet("lock", expired, timeUnit);
+    }
+
     /**
      * 设置键并添加过期时间
      *

@@ -4,6 +4,9 @@ import com.hutu.domain.activity.model.aggregate.CreateOrderAggregate;
 import com.hutu.domain.activity.model.entity.ActivityCountEntity;
 import com.hutu.domain.activity.model.entity.ActivityEntity;
 import com.hutu.domain.activity.model.entity.ActivitySkuEntity;
+import com.hutu.domain.activity.model.valobj.ActivitySkuStockKeyVO;
+
+import java.util.Date;
 
 /**
  * @description 活动仓储接口
@@ -36,5 +39,25 @@ public interface IActivityRepository {
      * @param createOrderAggregate 下单聚合对象
      */
     void doSaveOrder(CreateOrderAggregate createOrderAggregate);
+
+    /**
+     * 缓存商品sku库存
+     * @param cacheKey 缓存key
+     * @param stockCount 库存数量
+     */
+    void cacheActivitySkuStockCount(String cacheKey, Integer stockCount);
+
+    /**
+     * 减库存
+     * @param sku 商品sku
+     * @param cacheKey 缓存key
+     * @param endDateTime 缓存有效期
+     * @return 是否成功
+     */
+    boolean subtractionActivitySkuStock(Long sku, String cacheKey, Date endDateTime);
+
+
+    void activitySkuStockConsumeSendQueue(ActivitySkuStockKeyVO activitySkuStockKeyVO);
+
 
 }
