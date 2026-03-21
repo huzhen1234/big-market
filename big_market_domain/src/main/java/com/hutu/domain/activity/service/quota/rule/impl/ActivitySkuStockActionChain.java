@@ -1,11 +1,11 @@
-package com.hutu.domain.activity.service.rule.impl;
+package com.hutu.domain.activity.service.quota.rule.impl;
 
 import com.hutu.domain.activity.model.entity.ActivityCountEntity;
 import com.hutu.domain.activity.model.entity.ActivityEntity;
 import com.hutu.domain.activity.model.entity.ActivitySkuEntity;
 import com.hutu.domain.activity.repository.IActivityRepository;
 import com.hutu.domain.activity.service.armory.IActivityDispatch;
-import com.hutu.domain.activity.service.rule.AbstractActionChain;
+import com.hutu.domain.activity.service.quota.rule.AbstractActionChain;
 import com.hutu.types.enums.ResponseCode;
 import com.hutu.types.exception.AppException;
 import lombok.extern.slf4j.Slf4j;

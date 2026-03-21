@@ -1,21 +1,21 @@
-package com.hutu.domain.activity.service;
+package com.hutu.domain.activity.service.quota;
 
 import com.hutu.domain.activity.model.entity.ActivityCountEntity;
 import com.hutu.domain.activity.model.entity.ActivityEntity;
 import com.hutu.domain.activity.model.entity.ActivitySkuEntity;
 import com.hutu.domain.activity.repository.IActivityRepository;
-import com.hutu.domain.activity.service.rule.factory.DefaultActivityChainFactory;
+import com.hutu.domain.activity.service.quota.rule.factory.DefaultActivityChainFactory;
 
 /**
  * @description 抽奖活动的支撑类 减少抽象类的代码量
  */
-public class RaffleActivitySupport {
+public class RaffleActivityAccountQuotaSupport {
 
     protected DefaultActivityChainFactory defaultActivityChainFactory;
 
     protected IActivityRepository activityRepository;
 
-    public RaffleActivitySupport(IActivityRepository activityRepository, DefaultActivityChainFactory defaultActivityChainFactory) {
+    public RaffleActivityAccountQuotaSupport(IActivityRepository activityRepository, DefaultActivityChainFactory defaultActivityChainFactory) {
         this.activityRepository = activityRepository;
         this.defaultActivityChainFactory = defaultActivityChainFactory;
     }

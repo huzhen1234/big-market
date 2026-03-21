@@ -2,7 +2,7 @@ package com.hutu.trigger.listener;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.TypeReference;
-import com.hutu.domain.activity.service.ISkuStock;
+import com.hutu.domain.activity.service.IRaffleActivitySkuStockService;
 import com.hutu.types.event.BaseEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -24,7 +24,7 @@ public class ActivitySkuStockZeroCustomer {
     private String groupId;
 
     @Resource
-    private ISkuStock skuStock;
+    private IRaffleActivitySkuStockService skuStock;
 
     @KafkaListener(topics = "${kafka.topic.activity_sku_stock_zero}", groupId = "${spring.kafka.consumer.group-id}")
     public void listener(ConsumerRecord<?, ?> record, Acknowledgment acknowledgment) {

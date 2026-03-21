@@ -1,9 +1,12 @@
 package com.hutu.domain.activity.repository;
 
 import com.hutu.domain.activity.model.aggregate.CreateOrderAggregate;
+import com.hutu.domain.activity.model.aggregate.CreatePartakeOrderAggregate;
 import com.hutu.domain.activity.model.entity.ActivityCountEntity;
 import com.hutu.domain.activity.model.entity.ActivityEntity;
 import com.hutu.domain.activity.model.entity.ActivitySkuEntity;
+import com.hutu.domain.activity.model.entity.PartakeRaffleActivityEntity;
+import com.hutu.domain.activity.model.entity.UserRaffleOrderEntity;
 import com.hutu.domain.activity.model.valobj.ActivitySkuStockKeyVO;
 
 import java.util.Date;
@@ -69,4 +72,11 @@ public interface IActivityRepository {
 
     // 删除商品sku库存
     void clearActivitySkuStock(Long sku);
+
+    UserRaffleOrderEntity queryNoUsedRaffleOrder(PartakeRaffleActivityEntity partakeRaffleActivityEntity);
+
+
+    void saveCreatePartakeOrderAggregate(CreatePartakeOrderAggregate createPartakeOrderAggregate);
+
+
 }

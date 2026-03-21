@@ -5,7 +5,7 @@ import com.hutu.domain.activity.model.entity.SkuRechargeEntity;
 /**
  * @description 抽奖活动订单接口
  */
-public interface IRaffleOrder {
+public interface IRaffleActivityAccountQuotaService {
 
     /**
      * 创建 sku 账户充值订单，给用户增加抽奖次数
@@ -16,5 +16,5 @@ public interface IRaffleOrder {
      * @param skuRechargeEntity 活动商品充值实体对象
      * @return 单号
      */
-    String createSkuRechargeOrder(SkuRechargeEntity skuRechargeEntity);
+    String createOrder(SkuRechargeEntity skuRechargeEntity);
 }

@@ -1,4 +1,4 @@
-package com.hutu.domain.activity.service.rule;
+package com.hutu.domain.activity.service.quota.rule;
 
 /**
  * @description 下单规则责任链抽象类

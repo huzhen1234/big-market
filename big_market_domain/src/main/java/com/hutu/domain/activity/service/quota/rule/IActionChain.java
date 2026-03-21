@@ -1,4 +1,4 @@
-package com.hutu.domain.activity.service.rule;
+package com.hutu.domain.activity.service.quota.rule;
 
 import com.hutu.domain.activity.model.entity.ActivityCountEntity;
 import com.hutu.domain.activity.model.entity.ActivityEntity;

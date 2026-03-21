@@ -1,4 +1,4 @@
-package com.hutu.domain.activity.service.rule;
+package com.hutu.domain.activity.service.quota.rule;
 
 public interface IActionChainArmory {
 
