@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hutu.infrastructure.persistent.mapper.UserAwardRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.hutu.infrastructure.persistent.po.UserAwardRecord">
+            <id property="id" column="id" />
+            <result property="userId" column="user_id" />
+            <result property="activityId" column="activity_id" />
+            <result property="strategyId" column="strategy_id" />
+            <result property="orderId" column="order_id" />
+            <result property="awardId" column="award_id" />
+            <result property="awardTitle" column="award_title" />
+            <result property="awardTime" column="award_time" />
+            <result property="awardState" column="award_state" />
+            <result property="createTime" column="create_time" />
+            <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,user_id,activity_id,strategy_id,order_id,award_id,
+        award_title,award_time,award_state,create_time,update_time
+    </sql>
+</mapper>
