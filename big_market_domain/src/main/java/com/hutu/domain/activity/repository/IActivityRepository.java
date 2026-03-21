@@ -60,4 +60,13 @@ public interface IActivityRepository {
     void activitySkuStockConsumeSendQueue(ActivitySkuStockKeyVO activitySkuStockKeyVO);
 
 
+    ActivitySkuStockKeyVO takeQueueValue();
+
+    void clearQueueValue();
+
+    // 更新商品sku库存
+    void updateActivitySkuStock(Long sku);
+
+    // 删除商品sku库存
+    void clearActivitySkuStock(Long sku);
 }

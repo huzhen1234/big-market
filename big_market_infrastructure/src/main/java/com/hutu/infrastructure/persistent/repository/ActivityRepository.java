@@ -204,4 +204,38 @@ public class ActivityRepository implements IActivityRepository {
         raffleActivityAccount.setMonthCountSurplus(createOrderAggregate.getMonthCount());
         return raffleActivityAccount;
     }
+
+    @Override
+    public ActivitySkuStockKeyVO takeQueueValue() {
+        String cacheKey = Constants.ACTIVITY_SKU_COUNT_QUERY_KEY;
+        RBlockingQueue<ActivitySkuStockKeyVO> destinationQueue = redisService.getBlockingQueue(cacheKey);
+        return destinationQueue.poll();
+    }
+
+    @Override
+    public void clearQueueValue() {
+        String cacheKey = Constants.ACTIVITY_SKU_COUNT_QUERY_KEY;
+        RBlockingQueue<ActivitySkuStockKeyVO> destinationQueue = redisService.getBlockingQueue(cacheKey);
+        destinationQueue.clear();
+    }
+
+    @Override
+    public void updateActivitySkuStock(Long sku) {
+        raffleActivitySkuMapper.update(
+            new LambdaUpdateWrapper<RaffleActivitySku>()
+                .eq(RaffleActivitySku::getSku, sku)
+                .gt(RaffleActivitySku::getStockCountSurplus, 0)
+                .setSql("stock_count_surplus = stock_count_surplus - 1")
+        );
+    }
+
+    @Override
+    public void clearActivitySkuStock(Long sku) {
+        raffleActivitySkuMapper.update(
+            new LambdaUpdateWrapper<RaffleActivitySku>()
+                .eq(RaffleActivitySku::getSku, sku)
+                .set(RaffleActivitySku::getStockCountSurplus, 0)
+        );
+    }
+
 }

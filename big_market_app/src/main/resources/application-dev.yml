@@ -51,7 +51,8 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
     listener:
-      ack-mode: record # 每条消息处理完就提交 enable-auto-commit必须为false
+      ack-mode: manual_immediate # 手动立即提交 ack
+      concurrency: 3 # 并发消费者数量
 
 jetcache:
   statIntervalMinutes: 15          # 统计间隔（命中率、QPS）
